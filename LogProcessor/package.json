@@ -1,0 +1,19 @@
+{
+  "name": "processor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BIvanov",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^12.12.3",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4",
+    "typescript-require": "^0.2.10"
+  }
+}
