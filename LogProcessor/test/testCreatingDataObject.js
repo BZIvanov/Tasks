@@ -20,15 +20,18 @@ describe('Test the function responsible for filling the data from the file to an
     describe('Test the function which will create the object for the json report', function() {
         it('should be and object', function() {
             const testData = structuredData(hostNames, dates, hours, statusCode, hitMissStatus, bytes);
-            expect(JSON.parse(testData)).to.be.an('object');
+            const result = JSON.parse(testData);
+            expect(result).to.be.an('object');
         });
         it('should have property images.chem.co.uk', function () {
             const testData = structuredData(hostNames, dates, hours, statusCode, hitMissStatus, bytes);
-            expect(JSON.parse(testData)).to.have.property('images.chem.co.uk');
+            const result = JSON.parse(testData);
+            expect(result).to.have.property('images.chem.co.uk');
         });
         it('should have all keys ', function () {
             const testData = structuredData(hostNames, dates, hours, statusCode, hitMissStatus, bytes);
-            expect(JSON.parse(testData)).to.have.all.keys('images.chem.co.uk', 'asset3.turfcdn.com', 'asset1.turfcdn.com', 'images.tedbakerimages.com');
+            const result = JSON.parse(testData);
+            expect(result).to.have.all.keys('images.chem.co.uk', 'asset3.turfcdn.com', 'asset1.turfcdn.com', 'images.tedbakerimages.com');
         });
     });
 });

@@ -1,6 +1,22 @@
 const data = {};
 
-function structureData(hostNames: string[], dates: string[], hours: string[], statusCode: string[], hitMissStatus: string[], bytes: number[]) {
+function structureData(hostNames: string[], dates: string[], hours: string[], statusCode: string[], hitMissStatus: string[], bytes: number[], incorrectIndexes: number[]) {
+    // remove incorrect data
+    let countsRemoved = 0;
+    for (let row = 0; row < hostNames.length; row++) {
+        if (incorrectIndexes.includes(row)) {
+            hostNames.splice(row - countsRemoved, 1);
+            dates.splice(row - countsRemoved, 1);
+            hours.splice(row - countsRemoved, 1);
+            statusCode.splice(row - countsRemoved, 1);
+            hitMissStatus.splice(row - countsRemoved, 1);
+            bytes.splice(row - countsRemoved, 1);
+            countsRemoved++;
+            const idx = incorrectIndexes.indexOf(row);
+            incorrectIndexes.splice(idx, 1);
+        }
+    }
+
     for (let row = 0; row < hostNames.length; row++) {
         fillDynamicProps(data, hostNames[row]);
         fillDynamicProps(data[hostNames[row]], dates[row]);

@@ -21,21 +21,23 @@ fs.readFile('./inputs/log-processor.log', 'utf8', (err: Object, data: string) =>
     const hitMissStatus: string[] = fillFields.getHitMissStatus(data);
     const bytes: number[] = fillFields.getBytes(data);
     
+    // with the following function we will get the errors data ready for the errors file
+    const invalidData = validatedFields.validateFields(data, hitMissStatus);
+    const report: string[] = invalidData.errors;
+    fs.writeFile("./outputs/log-processor.log.err", report.join('\n'), (err: Object) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("The errors file was saved!");
+    });
+
     // with the following function we will get the data ready for the json file
-    const objectData = structuredData(hostNames, dates, hours, statusCode, hitMissStatus, bytes);
+    const incorectIndexes = invalidData.incorrectIndexes;
+    const objectData = structuredData(hostNames, dates, hours, statusCode, hitMissStatus, bytes, incorectIndexes);
     fs.writeFile("./outputs/log-processor.json", objectData, (err: Object) => {
         if (err) {
             return console.log(err);
         }
         console.log("The .json file was saved!");
-    });
-
-    // with the following function we will get the errors data ready for the errors file
-    const invalidData: string[] = validatedFields.validateFields(data, hitMissStatus);
-    fs.writeFile("./outputs/log-processor.log.err", invalidData.join('\n'), (err: Object) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("The errors file was saved!");
     });
 });

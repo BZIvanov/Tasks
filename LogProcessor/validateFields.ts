@@ -1,28 +1,39 @@
-function validateFields(rawData: string, cacheStatus: string[]): string[] {
+function validateFields(rawData: string, cacheStatus: string[]) {
     const rows: string[] = rawData.split('\n').filter(x => x !== '');
     // remove the header row
     rows.shift();
     
     const cacheErrors = checkCacheStatus(rows, cacheStatus);
     const fieldsErrors = checkFieldsLength(rows);
-    return cacheErrors.concat(fieldsErrors);
+    const report = {
+        errors: cacheErrors.errors.concat(fieldsErrors.errors),
+        incorrectIndexes: cacheErrors.incorrectIndexes.concat(fieldsErrors.incorrectIndexes)
+    }
+    return report;
 }
 
-function checkCacheStatus(rows: string[], cacheStatuses: string[]): string[] {
+function checkCacheStatus(rows: string[], cacheStatuses: string[]) {
     const rowsArray = [...rows];
-    const cacheErrors = [];
+    const cacheErrors = {
+        errors: [],
+        incorrectIndexes: []
+    };
     for (let s = 0; s < cacheStatuses.length; s++) {
         if (cacheStatuses[s] !== 'hit' && cacheStatuses[s] !== 'miss') {
             let errorText = rowsArray[s].split(' ')[7];
-            cacheErrors.push(`Invalid cache status in ${errorText} on line ${s + 2}`);
+            cacheErrors.errors.push(`Invalid cache status in ${errorText} on line ${s + 2}`);
+            cacheErrors.incorrectIndexes.push(s);
         }
     }
     return cacheErrors;
 }
 
-function checkFieldsLength(rows: string[]): string[] {
+function checkFieldsLength(rows: string[]) {
     let rowsArray: string[] = [...rows];
-    const lengthErrors = [];
+    const lengthErrors = {
+        errors: [],
+        incorrectIndexes: []
+    };
     
     for (let row = 0; row < rowsArray.length; row++) {
         let currentTextRow: string = rowsArray[row];
@@ -38,7 +49,8 @@ function checkFieldsLength(rows: string[]): string[] {
 
         let len: number = currentTextRow.split(' ').length;
         if (len !== 18) {
-            lengthErrors.push(`Expecting 18 fields but received ${len} on line ${row + 2}`);
+            lengthErrors.errors.push(`Expecting 18 fields but received ${len} on line ${row + 2}`);
+            lengthErrors.incorrectIndexes.push(row);
         }
     }
     return lengthErrors;
