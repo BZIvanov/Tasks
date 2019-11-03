@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="./static/images/pencil.png"/>
+    <link rel="stylesheet" type="text/css" href="./static/styles/styles.css">
+    <title>Graphical editor</title>
+</head>
+<body>
+    <main>
+        <form>
+            <input type="text" name="userInput" placeholder="Please enter a command">
+            <button>Run command</button>
+        </form>
+        <hr>
+        <section>
+            <div id="notification"></div>
+            <div id="root">Welcome!</div>
+        </section>
+    </main>
+    
+    <script src="./models/board.js"></script>
+    <script src="./utilities/validator.js"></script>
+    <script src="./views/drawBoard.js"></script>
+    <script src="./controllers/commands.js"></script>
+    <script src="./controllers/handleInput.js"></script>
+    <script src="./controllers/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            app();
+        });
+    </script>
+</body>
+</html>
