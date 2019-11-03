@@ -53,7 +53,7 @@ function fillRegion(command) {
     function filler(r, c) {
         if (r < 0 || r >= gameBoard.length || 
             c < 0 || c >= gameBoard[0].length || 
-            gameBoard[r][c] !== 'O' || gameBoard[r][c] === colour) {
+            gameBoard[r][c] !== 'O') {
                 return;
             }
         
@@ -72,6 +72,6 @@ function showContent() {
 }
 
 function terminateSession() {
-    gameBoard = [];
+    gameBoard = [[]];
     draw();
 }

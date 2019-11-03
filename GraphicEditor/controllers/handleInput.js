@@ -7,7 +7,6 @@ function handleCommand(event) {
     }
     
     const isValidInput = validateUserInput(userInput);
-
     if (isValidInput) {
         const handlers = {
             'I': createCanvas,

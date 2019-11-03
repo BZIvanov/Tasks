@@ -1,26 +1,29 @@
 function draw() {
-    const board = document.getElementById('root');
+    const canvas = document.getElementById('playField');
+    const ctx = canvas.getContext('2d');
     document.getElementById('notification').textContent = '';
-    board.innerHTML = '';
-
+    
     if (gameBoard.length === 0) {
-        return board.textContent = 'Please draw something!';
+        document.getElementById('notification').textContent = 'Please draw something!';
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     }
 
-    for (let row = 0; row < gameBoard.length; row++) {
-        const htmlRow = document.createElement('div');
-        for (let col = 0; col < gameBoard[0].length; col++) {
-            const htmlCell = drawCell(gameBoard[row][col]);
-            htmlRow.appendChild(htmlCell);
-        }
-        board.appendChild(htmlRow);
-    }
+    drawOnCanvas(canvas, ctx);
 }
 
-function drawCell(letter) {
-    const htmlSpan = document.createElement('span');
-    htmlSpan.textContent = letter;
-    return htmlSpan;
+function drawOnCanvas(canvas, ctx) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = gameBoard[0].length * 6.18;
+    canvas.height = gameBoard.length * 10.03;
+
+    ctx.font = "bold 11px monospace";
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    for (let row = 0; row < gameBoard.length; row++) {
+        const text = gameBoard[row].join('');
+        ctx.fillText(text, 0, row * 10);
+    }
 }
 
 function invalidInputNotification(message) {
