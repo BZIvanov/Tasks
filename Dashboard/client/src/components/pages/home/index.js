@@ -1,8 +1,8 @@
 import React from 'react';
-import { CircularProgress } from '../../atoms';
+import { SummaryTable } from '../../organisms';
 
 const Home = () => {
-  return <CircularProgress />;
+  return <SummaryTable />;
 };
 
 export default Home;

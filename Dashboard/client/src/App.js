@@ -5,8 +5,8 @@ import { ReactFlagsSelect } from './components/atoms';
 function App() {
   return (
     <div>
-      <Home />
       <ReactFlagsSelect />
+      <Home />
     </div>
   );
 }
