@@ -1,12 +1,15 @@
 import React from 'react';
 import { useStyles } from './styles';
-import { Paper, TableContainer } from '../../atoms';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import {
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TablePagination,
+} from '../../atoms';
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
@@ -111,8 +114,6 @@ export default function StickyHeadTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}

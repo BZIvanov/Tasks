@@ -1,8 +1,8 @@
 import React from 'react';
-import { SummaryTable } from '../../organisms';
+import { Summary } from '../../organisms';
 
 const Home = () => {
-  return <SummaryTable />;
+  return <Summary />;
 };
 
 export default Home;

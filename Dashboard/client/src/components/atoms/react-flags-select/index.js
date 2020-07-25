@@ -5,7 +5,6 @@ import 'react-flags-select/css/react-flags-select.css';
 const ReactFlagsSelect = ({ props }) => {
   return (
     <RFS
-      {...props}
       defaultCountry="GB"
       countries={[
         'BG',
@@ -20,6 +19,7 @@ const ReactFlagsSelect = ({ props }) => {
         'BE',
         'RO',
       ]}
+      {...props}
     />
   );
 };
