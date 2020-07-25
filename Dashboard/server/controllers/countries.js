@@ -13,9 +13,23 @@ exports.summary = async (req, res) => {
 
     const websites = sources.rows.map((source) => source['Source']);
 
+    const websitesRequests = websites.map((site) =>
+      pool.query(
+        `SELECT "ExtractionDate", COUNT("ExtractionDate") FROM "Product" WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3 GROUP BY "ExtractionDate" ORDER BY 1 DESC;`,
+        [flag.toUpperCase(), site, date]
+      )
+    );
+
+    const websitesResultsCounts = await Promise.all(websitesRequests);
+
     res.status(200).json({
       country: flag,
-      websites: websites,
+      websites: websites.map((website, index) => {
+        return {
+          website,
+          count: websitesResultsCounts[index].rows[0].count,
+        };
+      }),
       extractionDate: date,
     });
   } catch (err) {
