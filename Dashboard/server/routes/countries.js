@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const { summary } = require('../controllers/countries');
+const { getSummary } = require('../controllers/countries');
 
-router.route('/:flag').get(summary);
+router.route('/daily/:flag').get(getSummary);
+router.route('/historical/:flag').get(getSummary);
 
 module.exports = router;

@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/country', countries);
+app.use('/', countries);
 
 const PORT = process.env.PORT || 3100;
 
