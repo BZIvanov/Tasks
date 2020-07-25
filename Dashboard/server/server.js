@@ -1,9 +1,12 @@
 require('dotenv').config();
 require('colors');
 const express = require('express');
+const cors = require('cors');
 const countries = require('./routes/countries');
 
 const app = express();
+
+app.use(cors({ credentials: false }));
 
 app.use(express.json());
 
