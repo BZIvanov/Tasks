@@ -15,7 +15,7 @@ export const useStyles = makeStyles(() =>
     },
     loading: {
       position: 'absolute',
-      top: '50%',
+      top: 'calc(50% + 50px)',
       left: '50%',
       zIndex: 20,
     },

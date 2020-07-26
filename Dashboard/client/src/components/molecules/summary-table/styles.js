@@ -5,9 +5,6 @@ export const useStyles = makeStyles(() =>
     root: {
       width: '100%',
     },
-    container: {
-      maxHeight: 1040,
-    },
     products: {
       backgroundColor: '#ADBCA5',
     },
