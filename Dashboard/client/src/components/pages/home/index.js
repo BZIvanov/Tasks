@@ -2,7 +2,11 @@ import React from 'react';
 import { Summary } from '../../organisms';
 
 const Home = () => {
-  return <Summary />;
+  return (
+    <div>
+      <Summary />
+    </div>
+  );
 };
 
 export default Home;
