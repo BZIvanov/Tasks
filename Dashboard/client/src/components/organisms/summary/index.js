@@ -43,6 +43,7 @@ const Summary = () => {
   };
 
   const onSelectDate = () => {
+    setWebsites([]);
     setDate(dateRef.current.value);
   };
 
