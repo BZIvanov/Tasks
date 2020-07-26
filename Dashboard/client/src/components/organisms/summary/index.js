@@ -5,6 +5,17 @@ import { SummaryTable } from '../../molecules';
 import { CircularProgress, ReactFlagsSelect } from '../../atoms';
 import { transformDailyData } from '../../../utils/transformers';
 
+const patchCountryCode = (code) => {
+  switch (code) {
+    case 'GB':
+      return 'uk';
+    case 'BG':
+      return 'bu';
+    default:
+      return code;
+  }
+};
+
 const Summary = () => {
   const classes = useStyles();
   const [iso, setIso] = useState('uk');
@@ -17,8 +28,11 @@ const Summary = () => {
   }, [iso]);
 
   const onSelectFlag = (countryCode) => {
-    setWebsites([]);
-    setIso(countryCode);
+    if (countryCode !== iso) {
+      setWebsites([]);
+    }
+
+    setIso(patchCountryCode(countryCode));
   };
 
   const fetchData = (isoCode) => {
