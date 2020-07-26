@@ -8,3 +8,4 @@ export { default as TableBody } from './table-body';
 export { default as TableRow } from './table-row';
 export { default as TableCell } from './table-cell';
 export { default as TablePagination } from './table-pagination';
+export { default as TextField } from './text-field';

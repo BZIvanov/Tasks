@@ -1,45 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useStyles } from './styles';
 import { SummaryTable } from '../../molecules';
-import { CircularProgress, ReactFlagsSelect } from '../../atoms';
+import { CircularProgress, ReactFlagsSelect, TextField } from '../../atoms';
 import { transformDailyData } from '../../../utils/transformers';
-
-const patchCountryCode = (code) => {
-  switch (code) {
-    case 'GB':
-      return 'uk';
-    case 'BG':
-      return 'bu';
-    default:
-      return code;
-  }
-};
+import currentDate from '../../../utils/date';
+import patchCountryCode from '../../../utils/patch-codes';
 
 const Summary = () => {
   const classes = useStyles();
   const [iso, setIso] = useState('uk');
+  const [date, setDate] = useState(currentDate);
   const [websites, setWebsites] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dateRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
-    fetchData(iso);
-  }, [iso]);
-
-  const onSelectFlag = (countryCode) => {
-    if (countryCode !== iso) {
-      setWebsites([]);
-    }
-
-    setIso(patchCountryCode(countryCode));
-  };
-
-  const fetchData = (isoCode) => {
     axios
-      .get(`http://localhost:3100/daily/${isoCode}`, {
+      .get(`http://localhost:3100/daily/${iso}`, {
         params: {
-          date: '2020-07-24',
+          date,
         },
       })
       .then((response) => {
@@ -51,11 +32,37 @@ const Summary = () => {
         console.log(err);
         setLoading(false);
       });
+  }, [iso, date]);
+
+  const onSelectFlag = (countryCode) => {
+    if (countryCode !== iso) {
+      setWebsites([]);
+    }
+
+    setIso(patchCountryCode(countryCode));
+  };
+
+  const onSelectDate = () => {
+    setDate(dateRef.current.value);
   };
 
   return (
     <div className={classes.root}>
-      <ReactFlagsSelect onSelect={onSelectFlag} />
+      <div className={classes.searchControls}>
+        <ReactFlagsSelect onSelect={onSelectFlag} disabled={loading} />
+        <TextField
+          id="date"
+          type="date"
+          defaultValue={date}
+          onChange={onSelectDate}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputRef={dateRef}
+          disabled={loading}
+        />
+      </div>
+
       {loading && <CircularProgress className={classes.loading} />}
       {websites.length > 0 && <SummaryTable rows={websites} />}
     </div>

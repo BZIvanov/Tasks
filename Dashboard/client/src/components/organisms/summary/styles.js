@@ -5,6 +5,14 @@ export const useStyles = makeStyles(() =>
     root: {
       position: 'relative',
     },
+    searchControls: {
+      display: 'flex',
+      justifyContent: 'center',
+      margin: '20px 0',
+      '& .flag-select': {
+        marginRight: '20px',
+      },
+    },
     loading: {
       position: 'absolute',
       top: '50%',

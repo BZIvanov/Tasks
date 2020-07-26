@@ -54,6 +54,7 @@ const SummaryTable = ({ rows }) => {
                       role="checkbox"
                       tabIndex={-1}
                       key={row.code + '' + rowIndex}
+                      className={classes[row['robot']]}
                     >
                       {columns.map((column, colIndex) => {
                         const value = row[column.id];
