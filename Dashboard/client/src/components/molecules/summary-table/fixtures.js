@@ -1,6 +1,6 @@
 export const columns = [
   { id: 'robot', label: 'Robot', minWidth: 90 },
-  { id: 'country', label: 'ISO\u00a0Code', minWidth: 30 },
+  { id: 'country', label: 'ISO\u00a0Code', minWidth: 30, align: 'center' },
   {
     id: 'website',
     label: 'Website',
@@ -10,7 +10,7 @@ export const columns = [
     id: 'extractionDate',
     label: 'Extraction Date',
     minWidth: 90,
-    align: 'right',
+    align: 'center',
   },
   {
     id: 'count',

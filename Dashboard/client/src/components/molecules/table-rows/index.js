@@ -27,6 +27,7 @@ const TableRows = ({ columns, rows }) => {
                     <TableCell
                       key={column.id + '' + rowIndex + colIndex}
                       align={column.align}
+                      className={classes.cell}
                     >
                       <ul className={classes.list}>
                         {value.map((v, i) => (
@@ -40,6 +41,7 @@ const TableRows = ({ columns, rows }) => {
                   <TableCell
                     key={column.id + '' + rowIndex + colIndex}
                     align={column.align}
+                    className={classes.cell}
                   >
                     {column.format && typeof value === 'number'
                       ? column.format(value)

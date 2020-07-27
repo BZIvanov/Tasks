@@ -20,6 +20,9 @@ export const useStyles = makeStyles(() =>
     reviews: {
       backgroundColor: '#434A42',
     },
+    cell: {
+      padding: '8px',
+    },
     list: {
       margin: 0,
       padding: 0,
