@@ -3,13 +3,14 @@ import { useStyles } from './styles';
 import { TableHeader, TableRows } from '../../molecules';
 import { Paper, TableContainer, Table, TablePagination } from '../../atoms';
 import { columns } from './fixtures';
+import { TABLE_PAGINATION } from '../../../constants';
 
 const SummaryTable = ({ rows }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(TABLE_PAGINATION[0]);
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
 
