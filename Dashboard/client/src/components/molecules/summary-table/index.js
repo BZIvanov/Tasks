@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useStyles } from './styles';
+import { TableHeader } from '../../molecules';
 import {
   Paper,
   TableContainer,
   Table,
-  TableHead,
   TableBody,
   TableRow,
   TableCell,
@@ -30,19 +30,7 @@ const SummaryTable = ({ rows }) => {
     <Paper className={classes.root}>
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <TableHeader columns={columns} />
           <TableBody>
             {rows &&
               rows
