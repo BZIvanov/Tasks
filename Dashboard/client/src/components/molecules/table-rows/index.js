@@ -4,7 +4,6 @@ import { TableBody, TableRow, TableCell } from '../../atoms';
 
 const TableRows = ({ columns, rows }) => {
   const classes = useStyles();
-
   return (
     <TableBody>
       {rows &&
@@ -19,6 +18,24 @@ const TableRows = ({ columns, rows }) => {
             >
               {columns.map((column, colIndex) => {
                 const value = row[column.id];
+                if (
+                  column.id === 'count' &&
+                  Array.isArray(value) &&
+                  value.length > 1
+                ) {
+                  return (
+                    <TableCell
+                      key={column.id + '' + rowIndex + colIndex}
+                      align={column.align}
+                    >
+                      <ul className={classes.list}>
+                        {value.map((v, i) => (
+                          <li key={i}>{v}</li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  );
+                }
                 return (
                   <TableCell
                     key={column.id + '' + rowIndex + colIndex}

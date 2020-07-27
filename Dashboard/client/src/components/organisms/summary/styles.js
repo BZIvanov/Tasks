@@ -9,7 +9,8 @@ export const useStyles = makeStyles(() =>
       display: 'flex',
       justifyContent: 'center',
       margin: '20px 0',
-      '& .flag-select': {
+      '& .MuiFormControl-root': {
+        marginLeft: '20px',
         marginRight: '20px',
       },
     },

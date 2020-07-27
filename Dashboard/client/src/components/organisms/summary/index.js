@@ -11,16 +11,19 @@ const Summary = () => {
   const classes = useStyles();
   const [iso, setIso] = useState('uk');
   const [date, setDate] = useState(currentDate);
+  const [startDate, setStartDate] = useState(currentDate);
   const [websites, setWebsites] = useState([]);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
+  const startDateRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:3100/daily/${iso}`, {
+      .get(`http://localhost:3100/historical/${iso}`, {
         params: {
           date,
+          startDate,
         },
       })
       .then((response) => {
@@ -32,7 +35,7 @@ const Summary = () => {
         console.log(err);
         setLoading(false);
       });
-  }, [iso, date]);
+  }, [iso, date, startDate]);
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
@@ -47,6 +50,11 @@ const Summary = () => {
     setDate(dateRef.current.value);
   };
 
+  const onSelectStartDate = () => {
+    setWebsites([]);
+    setStartDate(startDateRef.current.value);
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.searchControls}>
@@ -54,12 +62,25 @@ const Summary = () => {
         <TextField
           id="date"
           type="date"
+          label="Websites target date"
           defaultValue={date}
           onChange={onSelectDate}
           InputLabelProps={{
             shrink: true,
           }}
           inputRef={dateRef}
+          disabled={loading}
+        />
+        <TextField
+          id="startDate"
+          type="date"
+          label="Start historical date"
+          defaultValue={startDate}
+          onChange={onSelectStartDate}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputRef={startDateRef}
           disabled={loading}
         />
       </div>

@@ -20,5 +20,12 @@ export const useStyles = makeStyles(() =>
     reviews: {
       backgroundColor: '#434A42',
     },
+    list: {
+      margin: 0,
+      padding: 0,
+      '& li': {
+        listStyleType: 'none',
+      },
+    },
   })
 );

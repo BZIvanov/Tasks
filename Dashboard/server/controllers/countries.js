@@ -13,7 +13,7 @@ const tableData = async (table, flag, date, isDaily, startDate) => {
     const websitesRequests = websites.map((site) =>
       pool.query(
         `SELECT "ExtractionDate", COUNT("ExtractionDate") FROM "${table}" WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" ${
-          isDaily ? '=' : '>'
+          isDaily ? '=' : '>='
         } $3 GROUP BY "ExtractionDate" ORDER BY 1 DESC;`,
         [flag.toUpperCase(), site, isDaily ? date : startDate]
       )

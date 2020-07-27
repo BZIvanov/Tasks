@@ -1,3 +1,10 @@
+const isMultipleDaysData = (dailies) => {
+  if (dailies.length > 1) {
+    return dailies.map((value) => `${value.ExtractionDate}: ${value.count}`);
+  }
+  return dailies[0].count;
+};
+
 export const transformDailyData = (country, tables) => {
   const keys = Object.keys(tables);
 
@@ -10,7 +17,7 @@ export const transformDailyData = (country, tables) => {
         country: country.toUpperCase(),
         website: row.website,
         extractionDate: row.count[0].ExtractionDate,
-        count: row.count[0].count,
+        count: isMultipleDaysData(row.count),
       });
     });
   });
