@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useStyles } from './styles';
-import { TableHeader } from '../../molecules';
-import {
-  Paper,
-  TableContainer,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  TablePagination,
-} from '../../atoms';
+import { TableHeader, TableRows } from '../../molecules';
+import { Paper, TableContainer, Table, TablePagination } from '../../atoms';
 import { columns } from './fixtures';
 
 const SummaryTable = ({ rows }) => {
@@ -31,36 +23,13 @@ const SummaryTable = ({ rows }) => {
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHeader columns={columns} />
-          <TableBody>
-            {rows &&
-              rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, rowIndex) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code + '' + rowIndex}
-                      className={classes[row['robot']]}
-                    >
-                      {columns.map((column, colIndex) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell
-                            key={column.id + '' + rowIndex + colIndex}
-                            align={column.align}
-                          >
-                            {column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-          </TableBody>
+          <TableRows
+            columns={columns}
+            rows={rows.slice(
+              page * rowsPerPage,
+              page * rowsPerPage + rowsPerPage
+            )}
+          />
         </Table>
       </TableContainer>
       <TablePagination
