@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "debug": "ndb server.js"
   },
   "author": "",
   "license": "MIT",
@@ -16,6 +17,7 @@
     "pg": "^8.3.0"
   },
   "devDependencies": {
+    "ndb": "^1.1.5",
     "nodemon": "^2.0.4"
   }
 }
