@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useStyles } from './styles';
-import { SummaryTable } from '../../molecules';
+import { DetailsTable } from '../../molecules';
 import {
   CircularProgress,
   ReactFlagsSelect,
@@ -43,8 +43,6 @@ const Details = () => {
         setLoading(false);
       });
   }, [iso, date, website]);
-
-  console.log(websites);
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
@@ -96,7 +94,9 @@ const Details = () => {
       </div>
 
       {loading && <CircularProgress className={classes.loading} />}
-      {/* {websites.length > 0 && <SummaryTable rows={websites} />} */}
+      {websites[0] && websites[0].rows.length > 0 && (
+        <DetailsTable rows={websites[0]} />
+      )}
     </div>
   );
 };
