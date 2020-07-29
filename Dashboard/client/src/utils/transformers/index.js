@@ -24,3 +24,21 @@ export const transformDailyData = (country, tables) => {
 
   return rows;
 };
+
+export const transformDetailsData = (country, tables) => {
+  const keys = Object.keys(tables);
+
+  const rows = [];
+
+  keys.forEach((key) => {
+    tables[key].forEach((row) => {
+      rows.push({
+        robot: key,
+        website: row.website,
+        rows: row.count,
+      });
+    });
+  });
+
+  return rows;
+};

@@ -3,15 +3,18 @@ import axios from 'axios';
 import { useStyles } from './styles';
 import { SummaryTable } from '../../molecules';
 import { CircularProgress, ReactFlagsSelect, TextField } from '../../atoms';
-import { transformDailyData } from '../../../utils/transformers';
+import {
+  transformDailyData,
+  transformDetailsData,
+} from '../../../utils/transformers';
 import currentDate from '../../../utils/date';
 import patchCountryCode from '../../../utils/patch-codes';
 
-const Summary = () => {
+const Details = () => {
   const classes = useStyles();
   const [iso, setIso] = useState('uk');
-  const [date, setDate] = useState(currentDate);
-  const [startDate, setStartDate] = useState(currentDate);
+  const [date, setDate] = useState('2020-07-28');
+  const [website, setWebsite] = useState('Very');
   const [websites, setWebsites] = useState([]);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
@@ -20,23 +23,24 @@ const Summary = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:3100/historical/${iso}`, {
+      .get(`http://localhost:3100/incorrect-detailed/${iso}`, {
         params: {
           date,
-          startDate,
+          website,
         },
       })
       .then((response) => {
-        console.log(response);
-        const { country, extractionDate, ...rest } = response.data;
-        setWebsites(transformDailyData(country, rest));
+        const { country, extractionDate, totalCount, ...rest } = response.data;
+        setWebsites(transformDetailsData(country, rest));
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
       });
-  }, [iso, date, startDate]);
+  }, [iso, date, website]);
+
+  console.log(websites);
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
@@ -51,14 +55,14 @@ const Summary = () => {
     setDate(dateRef.current.value);
   };
 
-  const onSelectStartDate = () => {
+  const onSelectWebsite = () => {
     setWebsites([]);
-    setStartDate(startDateRef.current.value);
+    setWebsite(startDateRef.current.value);
   };
 
   return (
     <div className={classes.root}>
-      <div className={classes.searchControls}>
+      {/* <div className={classes.searchControls}>
         <ReactFlagsSelect onSelect={onSelectFlag} disabled={loading} />
         <TextField
           id="date"
@@ -77,7 +81,7 @@ const Summary = () => {
           type="date"
           label="Start historical date"
           defaultValue={startDate}
-          onChange={onSelectStartDate}
+          onChange={onSelectWebsite}
           InputLabelProps={{
             shrink: true,
           }}
@@ -87,9 +91,9 @@ const Summary = () => {
       </div>
 
       {loading && <CircularProgress className={classes.loading} />}
-      {websites.length > 0 && <SummaryTable rows={websites} />}
+      {websites.length > 0 && <SummaryTable rows={websites} />} */}
     </div>
   );
 };
 
-export default Summary;
+export default Details;
