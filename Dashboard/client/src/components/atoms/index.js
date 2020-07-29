@@ -9,3 +9,7 @@ export { default as TableRow } from './table-row';
 export { default as TableCell } from './table-cell';
 export { default as TablePagination } from './table-pagination';
 export { default as TextField } from './text-field';
+export { default as MenuItem } from './menu-item';
+export { default as InputLabel } from './input-label';
+export { default as FormControl } from './form-control';
+export { default as Select } from './select';

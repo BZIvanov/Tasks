@@ -2,23 +2,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useStyles } from './styles';
 import { SummaryTable } from '../../molecules';
-import { CircularProgress, ReactFlagsSelect, TextField } from '../../atoms';
 import {
-  transformDailyData,
-  transformDetailsData,
-} from '../../../utils/transformers';
+  CircularProgress,
+  ReactFlagsSelect,
+  TextField,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Select,
+} from '../../atoms';
+import { transformDetailsData } from '../../../utils/transformers';
 import currentDate from '../../../utils/date';
 import patchCountryCode from '../../../utils/patch-codes';
 
 const Details = () => {
   const classes = useStyles();
   const [iso, setIso] = useState('uk');
-  const [date, setDate] = useState('2020-07-28');
+  const [date, setDate] = useState(currentDate);
   const [website, setWebsite] = useState('Very');
   const [websites, setWebsites] = useState([]);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
-  const startDateRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
@@ -55,14 +59,14 @@ const Details = () => {
     setDate(dateRef.current.value);
   };
 
-  const onSelectWebsite = () => {
+  const onSelectWebsite = (event) => {
     setWebsites([]);
-    setWebsite(startDateRef.current.value);
+    setWebsite(event.target.value);
   };
 
   return (
     <div className={classes.root}>
-      {/* <div className={classes.searchControls}>
+      <div className={classes.searchControls}>
         <ReactFlagsSelect onSelect={onSelectFlag} disabled={loading} />
         <TextField
           id="date"
@@ -76,22 +80,23 @@ const Details = () => {
           inputRef={dateRef}
           disabled={loading}
         />
-        <TextField
-          id="startDate"
-          type="date"
-          label="Start historical date"
-          defaultValue={startDate}
-          onChange={onSelectWebsite}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputRef={startDateRef}
-          disabled={loading}
-        />
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">Source</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={website}
+            onChange={onSelectWebsite}
+          >
+            <MenuItem value={'Very'}>Very</MenuItem>
+            <MenuItem value={'Argos'}>Argos</MenuItem>
+            <MenuItem value={'AO'}>AO</MenuItem>
+          </Select>
+        </FormControl>
       </div>
 
       {loading && <CircularProgress className={classes.loading} />}
-      {websites.length > 0 && <SummaryTable rows={websites} />} */}
+      {/* {websites.length > 0 && <SummaryTable rows={websites} />} */}
     </div>
   );
 };
