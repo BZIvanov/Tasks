@@ -5,5 +5,8 @@ export const useStyles = makeStyles(() =>
     root: {
       width: '100%',
     },
+    container: {
+      maxHeight: 'calc(100vh - 200px)',
+    },
   })
 );

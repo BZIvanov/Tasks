@@ -21,7 +21,9 @@ export const useStyles = makeStyles(() =>
       backgroundColor: '#434A42',
     },
     cell: {
-      padding: '8px',
+      padding: '5px',
+      border: '1px solid lightgrey',
+      fontSize: 12,
     },
     list: {
       margin: 0,

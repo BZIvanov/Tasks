@@ -21,7 +21,6 @@ export const useStyles = makeStyles(() =>
       zIndex: 20,
     },
     formControl: {
-      margin: '8px',
       minWidth: 120,
     },
     selectEmpty: {
