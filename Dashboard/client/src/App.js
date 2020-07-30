@@ -13,7 +13,11 @@ function App() {
       <Header />
       <Switch>
         <Route path={constants.ROOT_PATH} exact component={Home} />
-        <Route path={constants.TOTALS_PATH} exact component={Details} />
+        <Route
+          path={constants.INVALID_ENTITIES_PATH}
+          exact
+          component={Details}
+        />
       </Switch>
     </BrowserRouter>
   );

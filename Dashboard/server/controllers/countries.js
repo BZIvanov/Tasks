@@ -45,7 +45,7 @@ exports.getWebsites = async (req, res) => {
 
 const tableData = async (table, flag, date, isDaily, startDate) => {
   try {
-    const websites = getWebsitesList(table, flag, date);
+    const websites = await getWebsitesList(table, flag, date);
 
     const websitesRequests = websites.map((site) =>
       pool.query(

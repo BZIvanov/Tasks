@@ -19,9 +19,7 @@ const Summary = () => {
 
   useEffect(() => {
     const source = axios.CancelToken.source();
-
     setLoading(true);
-
     axios
       .get(`http://localhost:3100/historical/${iso}`, {
         params: {
