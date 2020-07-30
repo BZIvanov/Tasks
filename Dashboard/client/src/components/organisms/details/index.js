@@ -62,7 +62,7 @@ const Details = () => {
       })
       .then((response) => {
         const { country, extractionDate, totalCount, ...rest } = response.data;
-        setRows(transformDetailsData(country, rest));
+        setRows(transformDetailsData(rest));
         setLoading(false);
       })
       .catch((err) => {

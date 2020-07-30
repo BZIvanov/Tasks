@@ -25,7 +25,7 @@ export const transformDailyData = (country, tables) => {
   return rows;
 };
 
-export const transformDetailsData = (country, tables) => {
+export const transformDetailsData = (tables) => {
   const keys = Object.keys(tables);
 
   const rows = [];

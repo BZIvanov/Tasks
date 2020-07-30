@@ -1,7 +1,7 @@
 import React from 'react';
 import { Summary } from '../../organisms';
 
-const Home = () => {
+const SummaryPage = () => {
   return (
     <div>
       <Summary />
@@ -9,4 +9,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SummaryPage;

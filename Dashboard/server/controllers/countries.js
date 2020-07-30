@@ -43,16 +43,17 @@ exports.getWebsites = async (req, res) => {
   });
 };
 
-const tableData = async (table, flag, date, isDaily, startDate) => {
+const tableData = async (table, flag, date, startDate) => {
   try {
     const websites = await getWebsitesList(table, flag, date);
 
     const websitesRequests = websites.map((site) =>
       pool.query(
-        `SELECT "ExtractionDate", COUNT("ExtractionDate") FROM "${table}" WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" ${
-          isDaily ? '=' : '>='
-        } $3 GROUP BY "ExtractionDate" ORDER BY 1 DESC;`,
-        [flag.toUpperCase(), site, isDaily ? date : startDate]
+        `SELECT "ExtractionDate", COUNT("ExtractionDate") FROM "${table}" 
+        WHERE "Market" = $1 AND "Source" = $2 
+        AND "ExtractionDate" >= $3 AND "ExtractionDate" <= $4 GROUP BY "ExtractionDate" 
+        ORDER BY 1 DESC;`,
+        [flag.toUpperCase(), site, startDate, date]
       )
     );
 
@@ -67,27 +68,19 @@ const tableData = async (table, flag, date, isDaily, startDate) => {
 exports.getSummary = async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate(), startDate } = req.query;
-  const isDaily = req.path.includes('daily');
 
   try {
-    const products = await tableData('Product', flag, date, isDaily, startDate);
-    const filters = await tableData('Filter', flag, date, isDaily, startDate);
-    const banners = await tableData('Banner', flag, date, isDaily, startDate);
-    const searches = await tableData(
-      'SearchResult',
-      flag,
-      date,
-      isDaily,
-      startDate
-    );
+    const products = await tableData('Product', flag, date, startDate);
+    const filters = await tableData('Filter', flag, date, startDate);
+    const banners = await tableData('Banner', flag, date, startDate);
+    const searches = await tableData('SearchResult', flag, date, startDate);
     const baskets = await tableData(
       'BasketRecommendation',
       flag,
       date,
-      isDaily,
       startDate
     );
-    const reviews = await tableData('Review', flag, date, isDaily, startDate);
+    const reviews = await tableData('Review', flag, date, startDate);
 
     const transformData = (table) => {
       return table.websites.map((website, index) => {
@@ -178,8 +171,7 @@ const detailedQueries = async (table, flag, date, website) => {
 
 exports.getDetailed = async (req, res) => {
   const { flag } = req.params;
-  const { date = getDefaultDate() } = req.query;
-  const { website } = req.query;
+  const { date = getDefaultDate(), website } = req.query;
 
   try {
     const products = await detailedQueries('Product', flag, date, website);

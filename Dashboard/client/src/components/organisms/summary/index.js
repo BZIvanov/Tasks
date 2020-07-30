@@ -21,7 +21,7 @@ const Summary = () => {
     const source = axios.CancelToken.source();
     setLoading(true);
     axios
-      .get(`http://localhost:3100/historical/${iso}`, {
+      .get(`http://localhost:3100/summary/${iso}`, {
         params: {
           date,
           startDate,
@@ -52,6 +52,9 @@ const Summary = () => {
   };
 
   const onSelectDate = () => {
+    if (dateRef.current.value.localeCompare(startDate) === -1) {
+      setStartDate(dateRef.current.value);
+    }
     setWebsites([]);
     setDate(dateRef.current.value);
   };
@@ -69,7 +72,7 @@ const Summary = () => {
           id="date"
           type="date"
           label="Websites target date"
-          defaultValue={date}
+          value={date}
           onChange={onSelectDate}
           InputLabelProps={{
             shrink: true,
@@ -81,7 +84,7 @@ const Summary = () => {
           id="startDate"
           type="date"
           label="Start historical date"
-          defaultValue={startDate}
+          value={startDate}
           onChange={onSelectStartDate}
           InputLabelProps={{
             shrink: true,
