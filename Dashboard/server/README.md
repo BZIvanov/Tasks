@@ -1,5 +1,14 @@
 ## Routes
 
+### Available websites for a given date in all types of robots
+
+```
+http://localhost:3100/websites-list/uk?date=2020-07-28
+```
+
+- uk - targeted market
+- date - (optional, default today) for which date websites should be targeted
+
 ### Daily data
 
 ```

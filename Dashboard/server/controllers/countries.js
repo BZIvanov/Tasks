@@ -1,14 +1,51 @@
 const pool = require('../db');
 const getDefaultDate = require('../utils/get-default-date');
 
-const tableData = async (table, flag, date, isDaily, startDate) => {
+const getWebsitesList = async (table, flag, date) => {
   try {
     const sources = await pool.query(
       `SELECT DISTINCT "Source" FROM "${table}" WHERE "Market" = $1 AND "ExtractionDate" = $2 ORDER BY "Source";`,
       [flag.toUpperCase(), date]
     );
 
-    const websites = sources.rows.map((source) => source['Source']);
+    return sources.rows.map((source) => source['Source']);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getWebsites = async (req, res) => {
+  const { flag } = req.params;
+  const { date = getDefaultDate() } = req.query;
+
+  const products = await getWebsitesList('Product', flag, date);
+  const filters = await getWebsitesList('Filter', flag, date);
+  const banners = await getWebsitesList('Banner', flag, date);
+  const searches = await getWebsitesList('SearchResult', flag, date);
+  const baskets = await getWebsitesList('BasketRecommendation', flag, date);
+  const review = await getWebsitesList('Review', flag, date);
+
+  const allResults = [
+    ...products,
+    ...filters,
+    ...banners,
+    ...searches,
+    ...baskets,
+    ...review,
+  ];
+
+  const websites = [...new Set(allResults)];
+
+  res.status(200).json({
+    country: flag,
+    websites,
+    extractionDate: date,
+  });
+};
+
+const tableData = async (table, flag, date, isDaily, startDate) => {
+  try {
+    const websites = getWebsitesList(table, flag, date);
 
     const websitesRequests = websites.map((site) =>
       pool.query(
