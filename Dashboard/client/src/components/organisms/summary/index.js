@@ -18,16 +18,19 @@ const Summary = () => {
   const startDateRef = useRef(null);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     setLoading(true);
+
     axios
       .get(`http://localhost:3100/historical/${iso}`, {
         params: {
           date,
           startDate,
         },
+        cancelToken: source.token,
       })
       .then((response) => {
-        console.log(response);
         const { country, extractionDate, ...rest } = response.data;
         setWebsites(transformDailyData(country, rest));
         setLoading(false);
@@ -36,6 +39,10 @@ const Summary = () => {
         console.log(err);
         setLoading(false);
       });
+
+    return () => {
+      source.cancel();
+    };
   }, [iso, date, startDate]);
 
   const onSelectFlag = (countryCode) => {

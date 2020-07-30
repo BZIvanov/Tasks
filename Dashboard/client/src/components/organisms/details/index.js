@@ -19,12 +19,38 @@ const Details = () => {
   const classes = useStyles();
   const [iso, setIso] = useState('uk');
   const [date, setDate] = useState(currentDate);
-  const [website, setWebsite] = useState('Very');
-  const [websites, setWebsites] = useState([]);
+  const [website, setWebsite] = useState([]);
+  const [websites, setWebsites] = useState(['']);
+  const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+    setLoading(true);
+    axios
+      .get(`http://localhost:3100/websites-list/${iso}`, {
+        params: {
+          date,
+        },
+        cancelToken: source.token,
+      })
+      .then((response) => {
+        setWebsites(response.data.websites);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+
+    return () => {
+      source.cancel();
+    };
+  }, [iso, date]);
+
+  useEffect(() => {
+    const source = axios.CancelToken.source();
     setLoading(true);
     axios
       .get(`http://localhost:3100/incorrect-detailed/${iso}`, {
@@ -32,33 +58,38 @@ const Details = () => {
           date,
           website,
         },
+        cancelToken: source.token,
       })
       .then((response) => {
         const { country, extractionDate, totalCount, ...rest } = response.data;
-        setWebsites(transformDetailsData(country, rest));
+        setRows(transformDetailsData(country, rest));
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
       });
-  }, [iso, date, website]);
+
+    return () => {
+      source.cancel();
+    };
+  }, [iso, date, website, websites]);
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
-      setWebsites([]);
+      setRows([]);
     }
 
     setIso(patchCountryCode(countryCode));
   };
 
   const onSelectDate = () => {
-    setWebsites([]);
+    setRows([]);
     setDate(dateRef.current.value);
   };
 
   const onSelectWebsite = (event) => {
-    setWebsites([]);
+    setRows([]);
     setWebsite(event.target.value);
   };
 
@@ -85,18 +116,22 @@ const Details = () => {
             id="demo-simple-select"
             value={website}
             onChange={onSelectWebsite}
+            disabled={loading}
           >
-            <MenuItem value={'Very'}>Very</MenuItem>
-            <MenuItem value={'Argos'}>Argos</MenuItem>
-            <MenuItem value={'AO'}>AO</MenuItem>
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {websites.map((website) => (
+              <MenuItem key={website} value={website}>
+                {website}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </div>
 
       {loading && <CircularProgress className={classes.loading} />}
-      {websites[0] && websites[0].rows.length > 0 && (
-        <DetailsTable rows={websites[0]} />
-      )}
+      {rows[0] && rows[0].rows.length > 0 && <DetailsTable rows={rows[0]} />}
     </div>
   );
 };

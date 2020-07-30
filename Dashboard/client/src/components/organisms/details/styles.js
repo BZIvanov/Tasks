@@ -8,6 +8,7 @@ export const useStyles = makeStyles(() =>
     searchControls: {
       display: 'flex',
       justifyContent: 'center',
+      alignItems: 'flex-end',
       margin: '20px 0',
       '& .MuiFormControl-root': {
         marginLeft: '20px',
