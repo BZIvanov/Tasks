@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { useStyles } from './styles';
 import { TableHeader, TableRows } from '../../molecules';
-import { Paper, TableContainer, Table, TablePagination } from '../../atoms';
+import {
+  Paper,
+  TableContainer,
+  Table,
+  TablePagination,
+  Typography,
+} from '../../atoms';
 import { columns } from './fixtures';
 import { TABLE_PAGINATION } from '../../../constants';
 
-const DetailsTable = ({ rows }) => {
+const DetailsTable = ({ type, rows }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(TABLE_PAGINATION[0]);
@@ -21,12 +27,15 @@ const DetailsTable = ({ rows }) => {
 
   return (
     <Paper className={classes.root}>
+      <Typography variant="h5" color="secondary">
+        {type}
+      </Typography>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHeader columns={columns} />
+          <TableHeader columns={columns[type]} />
           <TableRows
-            columns={columns}
-            rows={rows.rows.slice(
+            columns={columns[type]}
+            rows={rows.slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage
             )}
@@ -34,7 +43,7 @@ const DetailsTable = ({ rows }) => {
         </Table>
       </TableContainer>
       <TablePagination
-        count={rows.rows.length}
+        count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

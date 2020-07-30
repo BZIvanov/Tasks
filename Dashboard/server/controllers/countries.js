@@ -198,7 +198,6 @@ exports.getDetailed = async (req, res) => {
 
     res.status(200).json({
       country: flag,
-      totalCount: products.counts.rowCount,
       products: transformData(products),
       filters: transformData(filters),
       banners: transformData(banners),

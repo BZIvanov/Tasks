@@ -6,7 +6,7 @@ export const useStyles = makeStyles(() =>
       width: '100%',
     },
     container: {
-      maxHeight: 'calc(100vh - 200px)',
+      maxHeight: 'calc(100vh - 225px)',
     },
   })
 );

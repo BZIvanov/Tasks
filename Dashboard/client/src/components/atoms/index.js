@@ -15,3 +15,4 @@ export { default as FormControl } from './form-control';
 export { default as Select } from './select';
 export { default as Menu } from './menu';
 export { default as Button } from './button';
+export { default as Typography } from './typography';

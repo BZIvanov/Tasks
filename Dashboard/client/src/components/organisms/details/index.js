@@ -21,7 +21,7 @@ const Details = () => {
   const [date, setDate] = useState(currentDate);
   const [website, setWebsite] = useState([]);
   const [websites, setWebsites] = useState(['']);
-  const [rows, setRows] = useState([]);
+  const [robots, setRobots] = useState([]);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
 
@@ -61,8 +61,8 @@ const Details = () => {
         cancelToken: source.token,
       })
       .then((response) => {
-        const { country, extractionDate, totalCount, ...rest } = response.data;
-        setRows(transformDetailsData(rest));
+        const { country, extractionDate, ...rest } = response.data;
+        setRobots(transformDetailsData(rest));
         setLoading(false);
       })
       .catch((err) => {
@@ -77,19 +77,19 @@ const Details = () => {
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
-      setRows([]);
+      setRobots([]);
     }
 
     setIso(patchCountryCode(countryCode));
   };
 
   const onSelectDate = () => {
-    setRows([]);
+    setRobots([]);
     setDate(dateRef.current.value);
   };
 
   const onSelectWebsite = (event) => {
-    setRows([]);
+    setRobots([]);
     setWebsite(event.target.value);
   };
 
@@ -131,7 +131,16 @@ const Details = () => {
       </div>
 
       {loading && <CircularProgress className={classes.loading} />}
-      {rows[0] && rows[0].rows.length > 0 && <DetailsTable rows={rows[0]} />}
+      {robots &&
+        robots.map((robot) =>
+          robot.rows.length > 0 ? (
+            <DetailsTable
+              key={robot.robot}
+              type={robot.robot}
+              rows={robot.rows}
+            />
+          ) : null
+        )}
     </div>
   );
 };
