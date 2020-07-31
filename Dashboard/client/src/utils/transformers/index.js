@@ -22,21 +22,3 @@ export const transformDailyData = (country, robots) => {
 
   return rows;
 };
-
-export const transformDetailsData = (tables) => {
-  const keys = Object.keys(tables);
-
-  const rows = [];
-
-  keys.forEach((key) => {
-    tables[key].forEach((row) => {
-      rows.push({
-        robot: key,
-        website: row.website,
-        rows: row.count,
-      });
-    });
-  });
-
-  return rows;
-};

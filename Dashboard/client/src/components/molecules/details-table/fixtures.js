@@ -1,5 +1,5 @@
 export const columns = {
-  products: [
+  Product: [
     { id: 'ExtractionDate', label: 'ExtractionDate' },
     { id: 'Market', label: 'Market' },
     { id: 'Source', label: 'Source' },
@@ -49,7 +49,7 @@ export const columns = {
     },
     { id: 'URL', label: 'URL' },
   ],
-  filters: [
+  Filter: [
     { id: 'ExtractionDate', label: 'ExtractionDate' },
     { id: 'Market', label: 'Market' },
     { id: 'Source', label: 'Source' },
@@ -65,7 +65,7 @@ export const columns = {
     { id: 'Shelf', label: 'Shelf' },
     { id: 'FilterURL', label: 'FilterURL' },
   ],
-  banners: [
+  Banner: [
     { id: 'ExtractionDate', label: 'ExtractionDate' },
     { id: 'Market', label: 'Market' },
     { id: 'Source', label: 'Source' },
@@ -79,7 +79,7 @@ export const columns = {
     { id: 'IsAboveFold', label: 'IsAboveFold' },
     { id: 'TargetURL', label: 'TargetURL' },
   ],
-  searches: [
+  SearchResult: [
     { id: 'ExtractionDate', label: 'ExtractionDate' },
     { id: 'Market', label: 'Market' },
     { id: 'Source', label: 'Source' },
@@ -94,7 +94,7 @@ export const columns = {
     { id: 'PositionOnPage', label: 'PositionOnPage' },
     { id: 'URL', label: 'URL' },
   ],
-  baskets: [
+  BasketRecommendation: [
     { id: 'ExtractionDate', label: 'ExtractionDate' },
     { id: 'Market', label: 'Market' },
     { id: 'Source', label: 'Source' },
@@ -104,6 +104,24 @@ export const columns = {
     { id: 'RecommendedProductImage', label: 'RecommendedProductImage' },
     { id: 'RecommendedProductPrice', label: 'RecommendedProductPrice' },
     { id: 'RecommendedProductRating', label: 'RecommendedProductRating' },
+    { id: 'ProductURL', label: 'ProductURL' },
+  ],
+  Review: [
+    { id: 'ExtractionDate', label: 'ExtractionDate' },
+    { id: 'Market', label: 'Market' },
+    { id: 'Source', label: 'Source' },
+    { id: 'Date', label: 'Date' },
+    { id: 'Rating', label: 'Rating' },
+    { id: 'ProductName', label: 'ProductName' },
+    { id: 'Brand', label: 'Brand' },
+    { id: 'ProductSKU', label: 'ProductSKU' },
+    { id: 'Title', label: 'Title' },
+    { id: 'Body', label: 'Body' },
+    { id: 'Recommended', label: 'Recommended' },
+    { id: 'ReviewerName', label: 'ReviewerName' },
+    { id: 'ReviewerLocation', label: 'ReviewerLocation' },
+    { id: 'ReviewerAge', label: 'ReviewerAge' },
+    { id: 'ReviewerGender', label: 'ReviewerGender' },
     { id: 'ProductURL', label: 'ProductURL' },
   ],
 };

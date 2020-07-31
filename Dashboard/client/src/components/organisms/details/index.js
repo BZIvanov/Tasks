@@ -11,7 +11,6 @@ import {
   FormControl,
   Select,
 } from '../../atoms';
-import { transformDetailsData } from '../../../utils/transformers';
 import currentDate from '../../../utils/date';
 import patchCountryCode from '../../../utils/patch-codes';
 
@@ -61,8 +60,7 @@ const Details = () => {
         cancelToken: source.token,
       })
       .then((response) => {
-        const { country, extractionDate, ...rest } = response.data;
-        setRobots(transformDetailsData(rest));
+        setRobots(response.data.robots);
         setLoading(false);
       })
       .catch((err) => {
