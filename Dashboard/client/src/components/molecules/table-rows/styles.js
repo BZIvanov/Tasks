@@ -2,22 +2,22 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() =>
   createStyles({
-    products: {
+    Product: {
       backgroundColor: '#ADBCA5',
     },
-    filters: {
+    Filter: {
       backgroundColor: '#E8B9AB',
     },
-    banners: {
+    Banner: {
       backgroundColor: '#E09891',
     },
-    searches: {
+    SearchResult: {
       backgroundColor: '#CB769E',
     },
-    baskets: {
+    BasketRecommendation: {
       backgroundColor: '#8C5F66',
     },
-    reviews: {
+    Review: {
       backgroundColor: '#434A42',
     },
     cell: {

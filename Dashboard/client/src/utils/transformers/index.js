@@ -5,19 +5,17 @@ const isMultipleDaysData = (dailies) => {
   return dailies[0].count;
 };
 
-export const transformDailyData = (country, tables) => {
-  const keys = Object.keys(tables);
-
+export const transformDailyData = (country, robots) => {
   const rows = [];
 
-  keys.forEach((key) => {
-    tables[key].forEach((row) => {
+  robots.forEach((robot) => {
+    robot.count.forEach((website) => {
       rows.push({
-        robot: key,
+        robot: robot.robot,
         country: country.toUpperCase(),
-        website: row.website,
-        extractionDate: row.count[0].ExtractionDate,
-        count: isMultipleDaysData(row.count),
+        website: website[0].Source,
+        extractionDate: website[0].ExtractionDate,
+        count: isMultipleDaysData(website),
       });
     });
   });

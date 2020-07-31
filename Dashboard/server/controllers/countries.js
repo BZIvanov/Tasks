@@ -1,110 +1,84 @@
 const pool = require('../db');
 const getDefaultDate = require('../utils/get-default-date');
+const catchAsync = require('../utils/catch-async');
+const AppError = require('../utils/app-error');
+const { ROBOTS } = require('../constants');
+const {
+  transformUniqueWebsitesList,
+  transformRobotWebsitesList,
+} = require('../transformers');
 
-const getWebsitesList = async (table, flag, date) => {
-  try {
-    const sources = await pool.query(
-      `SELECT DISTINCT "Source" FROM "${table}" WHERE "Market" = $1 AND "ExtractionDate" = $2 ORDER BY "Source";`,
-      [flag.toUpperCase(), date]
-    );
-
-    return sources.rows.map((source) => source['Source']);
-  } catch (err) {
-    console.log(err);
-  }
+const websitesListRequests = (table, flag, date) => {
+  return pool.query(
+    `SELECT DISTINCT "Source" FROM "${table}" WHERE "Market" = $1 AND "ExtractionDate" = $2 ORDER BY "Source";`,
+    [flag.toUpperCase(), date]
+  );
 };
 
-exports.getWebsites = async (req, res) => {
+exports.getWebsites = catchAsync(async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate() } = req.query;
 
-  const products = await getWebsitesList('Product', flag, date);
-  const filters = await getWebsitesList('Filter', flag, date);
-  const banners = await getWebsitesList('Banner', flag, date);
-  const searches = await getWebsitesList('SearchResult', flag, date);
-  const baskets = await getWebsitesList('BasketRecommendation', flag, date);
-  const review = await getWebsitesList('Review', flag, date);
+  const requests = ROBOTS.map((robot) =>
+    websitesListRequests(robot, flag, date)
+  );
 
-  const allResults = [
-    ...products,
-    ...filters,
-    ...banners,
-    ...searches,
-    ...baskets,
-    ...review,
-  ];
-
-  const websites = [...new Set(allResults)];
+  const resolved = await Promise.all(requests);
+  const websites = transformUniqueWebsitesList(resolved);
 
   res.status(200).json({
     country: flag,
     websites,
     extractionDate: date,
   });
+});
+
+const tableData = async (table, flag, site, date, startDate) => {
+  return pool.query(
+    `SELECT "ExtractionDate", "Source", COUNT("ExtractionDate") FROM "${table}" 
+      WHERE "Market" = $1 AND "Source" = $2 
+      AND "ExtractionDate" >= $3 AND "ExtractionDate" <= $4 GROUP BY "ExtractionDate", "Source"
+      ORDER BY 1 DESC;`,
+    [flag.toUpperCase(), site, startDate, date]
+  );
 };
 
-const tableData = async (table, flag, date, startDate) => {
-  try {
-    const websites = await getWebsitesList(table, flag, date);
-
-    const websitesRequests = websites.map((site) =>
-      pool.query(
-        `SELECT "ExtractionDate", COUNT("ExtractionDate") FROM "${table}" 
-        WHERE "Market" = $1 AND "Source" = $2 
-        AND "ExtractionDate" >= $3 AND "ExtractionDate" <= $4 GROUP BY "ExtractionDate" 
-        ORDER BY 1 DESC;`,
-        [flag.toUpperCase(), site, startDate, date]
-      )
-    );
-
-    const counts = await Promise.all(websitesRequests);
-
-    return { websites, counts };
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-exports.getSummary = async (req, res) => {
+exports.getSummary = catchAsync(async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate(), startDate } = req.query;
 
-  try {
-    const products = await tableData('Product', flag, date, startDate);
-    const filters = await tableData('Filter', flag, date, startDate);
-    const banners = await tableData('Banner', flag, date, startDate);
-    const searches = await tableData('SearchResult', flag, date, startDate);
-    const baskets = await tableData(
-      'BasketRecommendation',
-      flag,
-      date,
-      startDate
-    );
-    const reviews = await tableData('Review', flag, date, startDate);
+  const webSitesRequests = ROBOTS.map((robot) =>
+    websitesListRequests(robot, flag, date)
+  );
+  const websitesResolved = await Promise.all(webSitesRequests);
+  const robotWebsitesList = transformRobotWebsitesList(websitesResolved);
 
-    const transformData = (table) => {
-      return table.websites.map((website, index) => {
-        return {
-          website,
-          count: table.counts[index].rows,
-        };
-      });
+  const countsRequests = robotWebsitesList.map((list, index) =>
+    list.map((website) =>
+      tableData(ROBOTS[index], flag, website, date, startDate)
+    )
+  );
+  const countsResolved = await Promise.all(
+    countsRequests.map(async (requests) => {
+      return await Promise.all(requests);
+    })
+  );
+
+  const robotsCounts = ROBOTS.map((robot, index) => {
+    return {
+      robot,
+      count: countsResolved[index].map((robotSites) => {
+        return robotSites.rows;
+      }),
     };
+  });
 
-    res.status(200).json({
-      country: flag,
-      products: transformData(products),
-      filters: transformData(filters),
-      banners: transformData(banners),
-      searches: transformData(searches),
-      baskets: transformData(baskets),
-      reviews: transformData(reviews),
-      extractionDate: date,
-    });
-  } catch (err) {
-    console.log(err.message);
-  }
-};
+  res.status(200).json({
+    country: flag,
+    robots: robotsCounts,
+    extractionDate: date,
+  });
+});
 
 const detailedQueries = async (table, flag, date, website) => {
   try {
@@ -165,7 +139,7 @@ const detailedQueries = async (table, flag, date, website) => {
 
     return { websites: [website], counts };
   } catch (err) {
-    console.log(err);
+    throw new AppError('Something went oops', 500);
   }
 };
 

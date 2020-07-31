@@ -29,8 +29,8 @@ const Summary = () => {
         cancelToken: source.token,
       })
       .then((response) => {
-        const { country, extractionDate, ...rest } = response.data;
-        setWebsites(transformDailyData(country, rest));
+        const { country, robots } = response.data;
+        setWebsites(transformDailyData(country, robots));
         setLoading(false);
       })
       .catch((err) => {

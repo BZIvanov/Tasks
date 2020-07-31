@@ -3,6 +3,7 @@ require('colors');
 const express = require('express');
 const cors = require('cors');
 const countries = require('./routes/countries');
+const globalErrorMiddleware = require('./controllers/errors');
 
 const app = express();
 
@@ -11,6 +12,8 @@ app.use(cors({ credentials: false }));
 app.use(express.json());
 
 app.use('/', countries);
+
+app.use(globalErrorMiddleware);
 
 const PORT = process.env.PORT || 3100;
 
