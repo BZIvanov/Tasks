@@ -5,10 +5,11 @@ import { SummaryTable } from '../../molecules';
 import { CircularProgress, ReactFlagsSelect, TextField } from '../../atoms';
 import { transformDailyData } from '../../../utils/transformers';
 import currentDate from '../../../utils/date';
+import { COUNTRIES } from '../../../constants';
 
 const Summary = () => {
   const classes = useStyles();
-  const [iso, setIso] = useState('uk');
+  const [iso, setIso] = useState(COUNTRIES[0]);
   const [date, setDate] = useState(currentDate);
   const [startDate, setStartDate] = useState(currentDate);
   const [websites, setWebsites] = useState([]);

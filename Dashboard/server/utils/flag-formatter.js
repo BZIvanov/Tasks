@@ -1,10 +1,10 @@
 module.exports = (flag) => {
-  switch (flag) {
-    case 'gb':
-      flag = 'uk';
+  switch (flag.toUpperCase()) {
+    case 'GB':
+      flag = 'UK';
       break;
-    case 'bg':
-      flag = 'bu';
+    case 'BG':
+      flag = 'BU';
   }
   return flag.toUpperCase();
 };

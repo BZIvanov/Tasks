@@ -1,6 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       position: 'relative',
@@ -24,8 +24,10 @@ export const useStyles = makeStyles(() =>
     formControl: {
       minWidth: 120,
     },
-    selectEmpty: {
-      marginTop: '16px',
+    empty: {
+      '& .MuiSelect-root': {
+        backgroundColor: '#E8B9AB',
+      },
     },
   })
 );

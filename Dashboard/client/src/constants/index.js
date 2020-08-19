@@ -3,3 +3,26 @@ export const WEBSITE_DAILY_PATH = '/website-daily';
 export const INVALID_ENTITIES_PATH = '/invalid-entities';
 
 export const TABLE_PAGINATION = [15, 50, 100];
+
+export const ROBOT_TYPES = [
+  'Product',
+  'Filter',
+  'Banner',
+  'SearchResult',
+  'BasketRecommendation',
+  'Review',
+];
+
+export const COUNTRIES = [
+  'GB',
+  'BG',
+  'ES',
+  'FR',
+  'DE',
+  'IT',
+  'NL',
+  'NO',
+  'SE',
+  'BE',
+  'RO',
+];

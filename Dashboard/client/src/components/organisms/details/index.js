@@ -12,10 +12,11 @@ import {
   Select,
 } from '../../atoms';
 import currentDate from '../../../utils/date';
+import { COUNTRIES } from '../../../constants';
 
 const Details = () => {
   const classes = useStyles();
-  const [iso, setIso] = useState('uk');
+  const [iso, setIso] = useState(COUNTRIES[0]);
   const [date, setDate] = useState(currentDate);
   const [website, setWebsite] = useState([]);
   const [websites, setWebsites] = useState(['']);
