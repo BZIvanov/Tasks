@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useStyles } from './styles';
 import { TableHeader, TableRows } from '../../molecules';
 import {
@@ -9,20 +9,25 @@ import {
   Typography,
 } from '../../atoms';
 import { columns } from './fixtures';
-import { TABLE_PAGINATION } from '../../../constants';
 
-const DetailsTable = ({ type, rows }) => {
+const DetailsTable = ({
+  type,
+  rows,
+  page,
+  onSetPage,
+  rowsPerPage,
+  onSetRowsPerPage,
+  totalResults,
+}) => {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(TABLE_PAGINATION[0]);
 
   const handleChangePage = (_, newPage) => {
-    setPage(newPage);
+    onSetPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    onSetRowsPerPage(+event.target.value);
+    onSetPage(0);
   };
 
   return (
@@ -33,17 +38,11 @@ const DetailsTable = ({ type, rows }) => {
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHeader columns={columns[type]} />
-          <TableRows
-            columns={columns[type]}
-            rows={rows.slice(
-              page * rowsPerPage,
-              page * rowsPerPage + rowsPerPage
-            )}
-          />
+          <TableRows columns={columns[type]} rows={rows} />
         </Table>
       </TableContainer>
       <TablePagination
-        count={rows.length}
+        count={parseInt(totalResults)}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

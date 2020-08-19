@@ -170,29 +170,49 @@ exports.getDetailed = catchAsync(async (req, res) => {
   });
 });
 
-const websiteDailiesQuery = (table, flag, date, website) => {
+const websiteDailiesQuery = (table, flag, date, website, page, rowsPerPage) => {
+  const limit = rowsPerPage;
+  const offset = page * rowsPerPage;
+
   return pool.query(
     `SELECT * FROM "${table}"
-    WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3 LIMIT 15;`,
-    [flag, website, date]
+    WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3 LIMIT $4 OFFSET $5;`,
+    [flag, website, date, limit, offset]
   );
 };
 
 exports.getWebsiteDaily = catchAsync(async (req, res) => {
   const { flag } = req.params;
-  const { date = getDefaultDate(), website, robotType } = req.query;
+  const {
+    date = getDefaultDate(),
+    website,
+    robotType,
+    page,
+    rowsPerPage,
+  } = req.query;
   const formattedFlag = flagFormatter(flag);
 
   const robotResolved = await websiteDailiesQuery(
     robotType,
     formattedFlag,
     date,
-    website
+    website,
+    page,
+    rowsPerPage
+  );
+
+  const counts = await countsQuery(
+    robotType,
+    formattedFlag,
+    website,
+    date,
+    date
   );
 
   res.status(200).json({
     country: formattedFlag,
     robotType,
+    resultsCount: counts.rows[0].count,
     robot: robotResolved.rows,
     extractionDate: date,
   });

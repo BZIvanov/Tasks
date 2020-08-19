@@ -12,7 +12,7 @@ import {
   Select,
 } from '../../atoms';
 import currentDate from '../../../utils/date';
-import { ROBOT_TYPES, COUNTRIES } from '../../../constants';
+import { ROBOT_TYPES, COUNTRIES, TABLE_PAGINATION } from '../../../constants';
 
 const Details = () => {
   const classes = useStyles();
@@ -22,6 +22,9 @@ const Details = () => {
   const [website, setWebsite] = useState('');
   const [websites, setWebsites] = useState([]);
   const [robot, setRobot] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(TABLE_PAGINATION[0]);
+  const [totalResults, setTotalResults] = useState(0);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
 
@@ -50,30 +53,35 @@ const Details = () => {
   }, [iso, date]);
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
-    setLoading(true);
-    axios
-      .get(`http://localhost:3100/website-daily/${iso}`, {
-        params: {
-          date,
-          website,
-          robotType,
-        },
-        cancelToken: source.token,
-      })
-      .then((response) => {
-        setRobot(response.data.robot);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    if (website) {
+      const source = axios.CancelToken.source();
+      setLoading(true);
+      axios
+        .get(`http://localhost:3100/website-daily/${iso}`, {
+          params: {
+            date,
+            website,
+            robotType,
+            page,
+            rowsPerPage,
+          },
+          cancelToken: source.token,
+        })
+        .then((response) => {
+          setRobot(response.data.robot);
+          setTotalResults(response.data.resultsCount);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
 
-    return () => {
-      source.cancel();
-    };
-  }, [iso, date, website, robotType]);
+      return () => {
+        source.cancel();
+      };
+    }
+  }, [iso, date, website, robotType, page, rowsPerPage]);
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
@@ -156,7 +164,17 @@ const Details = () => {
         </FormControl>
       </div>
       {loading && <CircularProgress className={classes.loading} />}
-      {robot.length > 0 ? <DetailsTable type={robotType} rows={robot} /> : null}
+      {robot.length > 0 ? (
+        <DetailsTable
+          type={robotType}
+          rows={robot}
+          page={page}
+          onSetPage={setPage}
+          rowsPerPage={rowsPerPage}
+          onSetRowsPerPage={setRowsPerPage}
+          totalResults={totalResults}
+        />
+      ) : null}
     </div>
   );
 };

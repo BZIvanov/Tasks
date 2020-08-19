@@ -7,6 +7,9 @@ export const useStyles = makeStyles(() =>
     },
     container: {
       maxHeight: 'calc(100vh - 225px)',
+      '& .MuiTableCell-root': {
+        padding: '8px',
+      },
     },
   })
 );
