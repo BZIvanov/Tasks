@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Summary, Detailed } from './components/pages';
+import { Summary, Daily, Detailed } from './components/pages';
 import { Header } from './components/organisms';
 import * as constants from './constants';
 
@@ -12,11 +12,8 @@ function App() {
       <Header />
       <Switch>
         <Route path={constants.ROOT_PATH} exact component={Summary} />
-        <Route
-          path={constants.INVALID_ENTITIES_PATH}
-          exact
-          component={Detailed}
-        />
+        <Route path={constants.WEBSITE_DAILY_PATH} component={Daily} />
+        <Route path={constants.INVALID_ENTITIES_PATH} component={Detailed} />
       </Switch>
     </BrowserRouter>
   );
