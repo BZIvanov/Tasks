@@ -165,3 +165,30 @@ exports.getDetailed = catchAsync(async (req, res) => {
     extractionDate: date,
   });
 });
+
+const websiteDailiesQuery = (table, flag, date, website) => {
+  return pool.query(
+    `SELECT * FROM "${table}"
+    WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3 LIMIT 15;`,
+    [flag.toUpperCase(), website, date]
+  );
+};
+
+exports.getWebsiteDaily = catchAsync(async (req, res) => {
+  const { flag } = req.params;
+  const { date = getDefaultDate(), website, robotType } = req.query;
+
+  const robotResolved = await websiteDailiesQuery(
+    robotType,
+    flag,
+    date,
+    website
+  );
+
+  res.status(200).json({
+    country: flag,
+    robotType,
+    robot: robotResolved.rows,
+    extractionDate: date,
+  });
+});
