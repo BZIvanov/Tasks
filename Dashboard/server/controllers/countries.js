@@ -1,6 +1,7 @@
 const pool = require('../db');
 const getDefaultDate = require('../utils/get-default-date');
 const catchAsync = require('../utils/catch-async');
+const flagFormatter = require('../utils/flag-formatter');
 const { ROBOTS } = require('../constants');
 const {
   transformUniqueWebsitesList,
@@ -10,23 +11,24 @@ const {
 const websitesListRequests = (table, flag, date) => {
   return pool.query(
     `SELECT DISTINCT "Source" FROM "${table}" WHERE "Market" = $1 AND "ExtractionDate" = $2 ORDER BY "Source";`,
-    [flag.toUpperCase(), date]
+    [flag, date]
   );
 };
 
 exports.getWebsites = catchAsync(async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate() } = req.query;
+  const formattedFlag = flagFormatter(flag);
 
   const requests = ROBOTS.map((robot) =>
-    websitesListRequests(robot, flag, date)
+    websitesListRequests(robot, formattedFlag, date)
   );
 
   const resolved = await Promise.all(requests);
   const websites = transformUniqueWebsitesList(resolved);
 
   res.status(200).json({
-    country: flag,
+    country: formattedFlag,
     websites,
     extractionDate: date,
   });
@@ -38,23 +40,24 @@ const countsQuery = async (table, flag, site, date, startDate) => {
       WHERE "Market" = $1 AND "Source" = $2 
       AND "ExtractionDate" >= $3 AND "ExtractionDate" <= $4 GROUP BY "ExtractionDate", "Source"
       ORDER BY 1 DESC;`,
-    [flag.toUpperCase(), site, startDate, date]
+    [flag, site, startDate, date]
   );
 };
 
 exports.getSummary = catchAsync(async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate(), startDate } = req.query;
+  const formattedFlag = flagFormatter(flag);
 
   const webSitesRequests = ROBOTS.map((robot) =>
-    websitesListRequests(robot, flag, date)
+    websitesListRequests(robot, formattedFlag, date)
   );
   const websitesResolved = await Promise.all(webSitesRequests);
   const robotWebsitesList = transformRobotWebsitesList(websitesResolved);
 
   const countsRequests = robotWebsitesList.map((list, index) =>
     list.map((website) =>
-      countsQuery(ROBOTS[index], flag, website, date, startDate)
+      countsQuery(ROBOTS[index], formattedFlag, website, date, startDate)
     )
   );
   const countsResolved = await Promise.all(
@@ -73,7 +76,7 @@ exports.getSummary = catchAsync(async (req, res) => {
   });
 
   res.status(200).json({
-    country: flag,
+    country: formattedFlag,
     robots: robotsCounts,
     extractionDate: date,
   });
@@ -95,7 +98,7 @@ const detailsQueries = (table, flag, date, website) => {
           OR ("Rating" NOT SIMILAR TO '([0-9](\.[0-9]{1,5})?)' AND "Rating" <> '')
           OR "HeroImage" NOT LIKE 'https://%' OR ("GalleryImages" NOT LIKE 'https://%' AND "GalleryImages" <> '')
           OR ("InpageImages" NOT LIKE 'https://%' AND "InpageImages" <> ''));`,
-      [flag.toUpperCase(), website, date]
+      [flag, website, date]
     );
   } else if (table === 'Filter') {
     request = pool.query(
@@ -104,21 +107,21 @@ const detailsQueries = (table, flag, date, website) => {
           AND ("Brand" ILIKE '%iphone%' OR "Brand" = '' OR "Brand" IS NULL OR "ProductURL" NOT LIKE 'http%'
           OR "Label" = '' OR "Value" = '' OR "Label" IS NULL OR "Value" IS NULL
           OR "ProductName" = '' OR "ProductName" IS NULL);`,
-      [flag.toUpperCase(), website, date]
+      [flag, website, date]
     );
   } else if (table === 'Banner') {
     request = pool.query(
       `SELECT * FROM "${table}"
           WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3
           AND ("ImageURL" NOT LIKE 'http%' OR "TargetURL" NOT LIKE 'http%');`,
-      [flag.toUpperCase(), website, date]
+      [flag, website, date]
     );
   } else if (table === 'SearchResult') {
     request = pool.query(
       `SELECT * FROM "${table}"
           WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3
           AND ("Brand" ILIKE '%iphone%');`,
-      [flag.toUpperCase(), website, date]
+      [flag, website, date]
     );
   } else if (table === 'BasketRecommendation') {
     request = pool.query(
@@ -128,7 +131,7 @@ const detailsQueries = (table, flag, date, website) => {
           OR "RecommendedProductImage" NOT LIKE 'https://%'
           OR "RecommendedProductPrice" NOT SIMILAR TO '([0-9]{1,5}(\.[0-9]{1,2})?)'
           OR ("RecommendedProductRating" NOT SIMILAR TO '([0-9]{1,5}(\.[0-9]{1,2})?)' AND "RecommendedProductRating" IS NOT NULL));`,
-      [flag.toUpperCase(), website, date]
+      [flag, website, date]
     );
   } else if (table === 'Review') {
     request = pool.query(
@@ -136,7 +139,7 @@ const detailsQueries = (table, flag, date, website) => {
           WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3
           AND ("Date" IS NULL
           OR ("Rating" NOT SIMILAR TO '([0-9](\.[0-9]{1,5})?)' AND "Rating" <> ''));`,
-      [flag.toUpperCase(), website, date]
+      [flag, website, date]
     );
   }
 
@@ -146,9 +149,10 @@ const detailsQueries = (table, flag, date, website) => {
 exports.getDetailed = catchAsync(async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate(), website } = req.query;
+  const formattedFlag = flagFormatter(flag);
 
   const robotsRequests = ROBOTS.map((robot) =>
-    detailsQueries(robot, flag, date, website)
+    detailsQueries(robot, formattedFlag, date, website)
   );
   const robotsResolved = await Promise.all(robotsRequests);
 
@@ -160,7 +164,7 @@ exports.getDetailed = catchAsync(async (req, res) => {
   });
 
   res.status(200).json({
-    country: flag,
+    country: formattedFlag,
     robots: transformData,
     extractionDate: date,
   });
@@ -170,23 +174,24 @@ const websiteDailiesQuery = (table, flag, date, website) => {
   return pool.query(
     `SELECT * FROM "${table}"
     WHERE "Market" = $1 AND "Source" = $2 AND "ExtractionDate" = $3 LIMIT 15;`,
-    [flag.toUpperCase(), website, date]
+    [flag, website, date]
   );
 };
 
 exports.getWebsiteDaily = catchAsync(async (req, res) => {
   const { flag } = req.params;
   const { date = getDefaultDate(), website, robotType } = req.query;
+  const formattedFlag = flagFormatter(flag);
 
   const robotResolved = await websiteDailiesQuery(
     robotType,
-    flag,
+    formattedFlag,
     date,
     website
   );
 
   res.status(200).json({
-    country: flag,
+    country: formattedFlag,
     robotType,
     robot: robotResolved.rows,
     extractionDate: date,

@@ -12,7 +12,6 @@ import {
   Select,
 } from '../../atoms';
 import currentDate from '../../../utils/date';
-import patchCountryCode from '../../../utils/patch-codes';
 
 const Details = () => {
   const classes = useStyles();
@@ -78,7 +77,7 @@ const Details = () => {
       setRobots([]);
     }
 
-    setIso(patchCountryCode(countryCode));
+    setIso(countryCode);
   };
 
   const onSelectDate = () => {

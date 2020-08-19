@@ -5,7 +5,6 @@ import { SummaryTable } from '../../molecules';
 import { CircularProgress, ReactFlagsSelect, TextField } from '../../atoms';
 import { transformDailyData } from '../../../utils/transformers';
 import currentDate from '../../../utils/date';
-import patchCountryCode from '../../../utils/patch-codes';
 
 const Summary = () => {
   const classes = useStyles();
@@ -48,7 +47,7 @@ const Summary = () => {
       setWebsites([]);
     }
 
-    setIso(patchCountryCode(countryCode));
+    setIso(countryCode);
   };
 
   const onSelectDate = () => {

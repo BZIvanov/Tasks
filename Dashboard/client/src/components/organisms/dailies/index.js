@@ -12,12 +12,31 @@ import {
   Select,
 } from '../../atoms';
 import currentDate from '../../../utils/date';
-import patchCountryCode from '../../../utils/patch-codes';
 
 const Details = () => {
   const classes = useStyles();
+  const [iso, setIso] = useState('UK');
+  const [robots, setRobots] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  return <div className={classes.root}>works</div>;
+  const onSelectFlag = (countryCode) => {
+    if (countryCode.toLowerCase() !== iso.toLowerCase()) {
+      console.log(countryCode.toLowerCase());
+      console.log(iso.toLowerCase());
+      setRobots([]);
+    }
+    setIso(countryCode);
+  };
+
+  console.log(iso);
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.searchControls}>
+        <ReactFlagsSelect onSelect={onSelectFlag} disabled={loading} />
+      </div>
+    </div>
+  );
 };
 
 export default Details;
