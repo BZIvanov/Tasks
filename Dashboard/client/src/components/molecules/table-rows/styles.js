@@ -32,5 +32,13 @@ export const useStyles = makeStyles(() =>
         listStyleType: 'none',
       },
     },
+    images: {
+      display: 'flex',
+      '& img': {
+        width: '50px',
+        margin: '0 4px',
+        border: '1px solid #A3B9C9',
+      },
+    },
   })
 );

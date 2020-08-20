@@ -38,6 +38,31 @@ const TableRows = ({ columns, rows }) => {
                     </TableCell>
                   );
                 }
+                if (
+                  column.id === 'GalleryImages' ||
+                  column.id === 'HeroImage' ||
+                  column.id === 'InpageImages' ||
+                  column.id === 'ImageURL'
+                ) {
+                  const images = value
+                    ? value.split('|').filter((src) => !!src)
+                    : [];
+                  return (
+                    <TableCell
+                      key={column.id + '' + rowIndex + colIndex}
+                      align={column.align}
+                      className={classes.cell}
+                    >
+                      <ul className={`${classes.list} ${classes.images}`}>
+                        {images.map((v, i) => (
+                          <li key={i}>
+                            <img src={v} alt="gallery item" />
+                          </li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  );
+                }
                 return (
                   <TableCell
                     key={column.id + '' + rowIndex + colIndex}

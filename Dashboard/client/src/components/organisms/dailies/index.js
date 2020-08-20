@@ -88,22 +88,26 @@ const Details = () => {
       setRobot([]);
     }
     setWebsite('');
+    setPage(0);
     setIso(countryCode);
   };
 
   const onSelectDate = () => {
     setWebsite('');
+    setPage(0);
     setRobot([]);
     setDate(dateRef.current.value);
   };
 
   const onSelectRobotType = ({ target: { value } }) => {
     setRobot([]);
+    setPage(0);
     setRobotType(value);
   };
 
   const onSelectWebsite = ({ target: { value } }) => {
     setRobot([]);
+    setPage(0);
     setWebsite(value);
   };
 
