@@ -40,5 +40,8 @@ export const useStyles = makeStyles(() =>
         border: '1px solid #A3B9C9',
       },
     },
+    error: {
+      backgroundColor: 'red',
+    },
   })
 );

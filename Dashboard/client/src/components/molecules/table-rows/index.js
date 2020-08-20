@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStyles } from './styles';
 import { TableBody, TableRow, TableCell } from '../../atoms';
+import validator from '../../../utils/validators';
 
 const TableRows = ({ columns, rows }) => {
   const classes = useStyles();
@@ -19,6 +20,9 @@ const TableRows = ({ columns, rows }) => {
             >
               {columns.map((column, colIndex) => {
                 const value = row[column.id];
+                const isIncorrect = validator[column.id]
+                  ? validator[column.id](value)
+                  : false;
                 if (
                   column.id === 'count' &&
                   Array.isArray(value) &&
@@ -67,7 +71,9 @@ const TableRows = ({ columns, rows }) => {
                   <TableCell
                     key={column.id + '' + rowIndex + colIndex}
                     align={column.align}
-                    className={classes.cell}
+                    className={`${classes.cell} ${
+                      isIncorrect ? classes.error : null
+                    }`}
                   >
                     {column.format ? column.format(value) : value}
                   </TableCell>
