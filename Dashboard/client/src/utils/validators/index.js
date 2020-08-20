@@ -48,7 +48,7 @@ export default {
     return false;
   },
   Rating: (value) => {
-    if (value && !/^\d{1}(\.\d{1,5})?$/.test(value)) {
+    if (value && !/^\d{1}(\.\d+)?$/.test(value)) {
       return true;
     }
     return false;

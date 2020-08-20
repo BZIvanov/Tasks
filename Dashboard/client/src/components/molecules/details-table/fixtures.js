@@ -39,13 +39,15 @@ export const columns = {
       id: 'RecommendedProducts',
       label: 'RecommendedProducts',
       minWidth: 250,
-      format: (value) => (value ? value.substr(0, 150) + '...' : value),
+      format: (value) =>
+        value && value.length > 150 ? value.substr(0, 150) + '...' : value,
     },
     {
       id: 'Specifications',
       label: 'Specifications',
       minWidth: 250,
-      format: (value) => (value ? value.substr(0, 150) + '...' : value),
+      format: (value) =>
+        value && value.length > 150 ? value.substr(0, 150) + '...' : value,
     },
     { id: 'URL', label: 'URL' },
   ],
