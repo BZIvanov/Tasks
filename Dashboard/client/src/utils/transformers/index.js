@@ -15,8 +15,8 @@ export const transformDailyData = (country, robots) => {
       rows.push({
         robot: robot.robot,
         country: country.toUpperCase(),
-        website: website[0].Source,
-        extractionDate: website[0].ExtractionDate,
+        website: website[website.length - 1].Source,
+        extractionDate: website[website.length - 1].ExtractionDate,
         count: isMultipleDaysData(website),
       });
     });

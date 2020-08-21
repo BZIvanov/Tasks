@@ -43,7 +43,7 @@ const Cell = ({ value, column, isIncorrect }) => {
       <ul className={classes.list}>
         {images.map((v, i) => (
           <li key={i}>
-            <img src={v} alt="gallery item" />
+            <img src={v} alt="missing" />
           </li>
         ))}
       </ul>

@@ -39,7 +39,7 @@ const countsQuery = async (table, flag, site, date, startDate) => {
     `SELECT "ExtractionDate", "Source", COUNT("ExtractionDate") FROM "${table}" 
       WHERE "Market" = $1 AND "Source" = $2 
       AND "ExtractionDate" >= $3 AND "ExtractionDate" <= $4 GROUP BY "ExtractionDate", "Source"
-      ORDER BY 1 DESC;`,
+      ORDER BY 1 ASC;`,
     [flag, site, startDate, date]
   );
 };
