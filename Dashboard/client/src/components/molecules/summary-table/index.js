@@ -21,7 +21,7 @@ const SummaryTable = ({ rows }) => {
 
   return (
     <Paper className={classes.root}>
-      <TableContainer>
+      <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHeader columns={columns} />
           <TableRows

@@ -20,28 +20,5 @@ export const useStyles = makeStyles(() =>
     Review: {
       backgroundColor: '#434A42',
     },
-    cell: {
-      padding: '5px',
-      border: '1px solid lightgrey',
-      fontSize: 12,
-    },
-    list: {
-      margin: 0,
-      padding: 0,
-      '& li': {
-        listStyleType: 'none',
-      },
-    },
-    images: {
-      display: 'flex',
-      '& img': {
-        width: '50px',
-        margin: '0 4px',
-        border: '1px solid #A3B9C9',
-      },
-    },
-    error: {
-      backgroundColor: 'red',
-    },
   })
 );

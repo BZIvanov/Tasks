@@ -2,24 +2,6 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() =>
   createStyles({
-    Product: {
-      backgroundColor: '#ADBCA5',
-    },
-    Filter: {
-      backgroundColor: '#E8B9AB',
-    },
-    Banner: {
-      backgroundColor: '#E09891',
-    },
-    SearchResult: {
-      backgroundColor: '#CB769E',
-    },
-    BasketRecommendation: {
-      backgroundColor: '#8C5F66',
-    },
-    Review: {
-      backgroundColor: '#434A42',
-    },
     cell: {
       padding: '5px',
       border: '1px solid lightgrey',
@@ -28,17 +10,34 @@ export const useStyles = makeStyles(() =>
     list: {
       margin: 0,
       padding: 0,
+      display: 'flex',
       '& li': {
         listStyleType: 'none',
+        margin: '0 4px',
       },
-    },
-    images: {
-      display: 'flex',
       '& img': {
         width: '50px',
-        margin: '0 4px',
         border: '1px solid #A3B9C9',
       },
+    },
+    timeline: {
+      justifyContent: 'center',
+    },
+    count: {},
+    date: {
+      color: '#243335',
+    },
+    green: {
+      border: '2px solid green',
+      padding: '1px',
+    },
+    red: {
+      border: '2px solid red',
+      padding: '1px',
+    },
+    none: {
+      border: '2px solid transparent',
+      padding: '1px',
     },
     error: {
       backgroundColor: 'red',

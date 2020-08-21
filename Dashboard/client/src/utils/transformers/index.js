@@ -1,6 +1,8 @@
 const isMultipleDaysData = (dailies) => {
   if (dailies.length > 1) {
-    return dailies.map((value) => `${value.ExtractionDate}: ${value.count}`);
+    return dailies.map((value) => {
+      return { extractionDate: value.ExtractionDate, count: value.count };
+    });
   }
   return dailies[0].count;
 };

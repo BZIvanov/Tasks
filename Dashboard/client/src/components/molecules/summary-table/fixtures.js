@@ -16,7 +16,7 @@ export const columns = [
     id: 'count',
     label: 'Count',
     minWidth: 30,
-    align: 'right',
+    align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
 ];
