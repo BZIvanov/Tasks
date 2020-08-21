@@ -10,6 +10,10 @@ const SummaryTable = ({ rows }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(TABLE_PAGINATION[0]);
 
+  const targetColumns = columns.filter((column) => {
+    return Object.keys(rows[0]).includes(column.id);
+  });
+
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
@@ -23,9 +27,9 @@ const SummaryTable = ({ rows }) => {
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHeader columns={columns} />
+          <TableHeader columns={targetColumns} />
           <TableRows
-            columns={columns}
+            columns={targetColumns}
             rows={rows.slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage

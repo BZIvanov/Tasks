@@ -17,9 +17,8 @@ const stat = (currentIndex, counts) => {
 
 const Cell = ({ value, column, isIncorrect }) => {
   const classes = useStyles();
-
   let renderValue;
-  if (column.id === 'count' && Array.isArray(value) && value.length > 1) {
+  if (column.id === 'count') {
     renderValue = (
       <ul className={`${classes.list} ${classes.timeline}`}>
         {value.map((v, i, a) => (
@@ -27,7 +26,7 @@ const Cell = ({ value, column, isIncorrect }) => {
             <div className={`${classes.count} ${classes[stat(i, a)]}`}>
               {v.count}
             </div>
-            <div className={classes.date}>{v.extractionDate}</div>
+            <div className={classes.date}>{v.ExtractionDate}</div>
           </li>
         ))}
       </ul>

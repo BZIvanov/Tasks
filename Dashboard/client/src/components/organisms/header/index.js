@@ -6,6 +6,7 @@ import {
   ROOT_PATH,
   WEBSITE_DAILY_PATH,
   INVALID_ENTITIES_PATH,
+  WEBSITE_CATEGORIES_PATH,
 } from '../../../constants';
 
 const Header = () => {
@@ -43,6 +44,9 @@ const Header = () => {
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <NavLink to={WEBSITE_DAILY_PATH}>Dailies</NavLink>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <NavLink to={WEBSITE_CATEGORIES_PATH}>Categories</NavLink>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <NavLink to={INVALID_ENTITIES_PATH}>Invalid entities</NavLink>

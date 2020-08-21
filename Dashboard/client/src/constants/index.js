@@ -1,5 +1,6 @@
 export const ROOT_PATH = '/';
 export const WEBSITE_DAILY_PATH = '/website-daily';
+export const WEBSITE_CATEGORIES_PATH = '/website-categories';
 export const INVALID_ENTITIES_PATH = '/invalid-entities';
 
 export const TABLE_PAGINATION = [30, 100, 300];

@@ -13,6 +13,21 @@ export const columns = [
     align: 'center',
   },
   {
+    id: 'firstLevel',
+    label: 'Level1Category',
+    align: 'center',
+  },
+  {
+    id: 'secondLevel',
+    label: 'Level2Category',
+    align: 'center',
+  },
+  {
+    id: 'thirdLevel',
+    label: 'Level3Category',
+    align: 'center',
+  },
+  {
     id: 'count',
     label: 'Count',
     minWidth: 30,
