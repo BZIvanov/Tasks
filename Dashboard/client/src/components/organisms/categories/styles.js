@@ -23,5 +23,10 @@ export const useStyles = makeStyles(() =>
       left: '50%',
       zIndex: 20,
     },
+    empty: {
+      '& .MuiSelect-root': {
+        backgroundColor: '#E8B9AB',
+      },
+    },
   })
 );

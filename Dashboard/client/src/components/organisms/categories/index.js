@@ -81,16 +81,18 @@ const Categories = () => {
       setWebsites([]);
     }
     setWebsite('');
+    setCategories([]);
     setIso(countryCode);
   };
 
   const onSelectDate = () => {
-    setWebsites([]);
+    setCategories([]);
     setWebsite('');
     setDate(dateRef.current.value);
   };
 
   const onSelectWebsite = ({ target: { value } }) => {
+    setCategories([]);
     setWebsite(value);
   };
 

@@ -17,6 +17,7 @@ const stat = (currentIndex, counts) => {
 
 const Cell = ({ value, column, isIncorrect }) => {
   const classes = useStyles();
+
   let renderValue;
   if (column.id === 'count') {
     renderValue = (
