@@ -48,9 +48,9 @@ const Header = () => {
         <MenuItem onClick={handleClose}>
           <NavLink to={WEBSITE_CATEGORIES_PATH}>Categories</NavLink>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <NavLink to={INVALID_ENTITIES_PATH}>Invalid entities</NavLink>
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </div>
   );
