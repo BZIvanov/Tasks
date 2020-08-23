@@ -89,6 +89,9 @@ const Categories = () => {
   };
 
   const onSelectDate = () => {
+    if (dateRef.current.value.localeCompare(startDate) === -1) {
+      setStartDate(dateRef.current.value);
+    }
     setCategories([]);
     setWebsite('');
     setDate(dateRef.current.value);

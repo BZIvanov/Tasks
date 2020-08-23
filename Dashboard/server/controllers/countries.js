@@ -218,23 +218,24 @@ exports.getWebsiteDaily = catchAsync(async (req, res) => {
   });
 });
 
-const websiteCategoriesQuery = (flag, date, website) => {
+const websiteCategoriesQuery = (flag, date, startDate, website) => {
   return pool.query(
     `SELECT "ExtractionDate", "Level1Category", "Level2Category", "Level3Category", COUNT(*) AS "count" 
-    FROM "Product" WHERE "ExtractionDate" >= $3 AND "Market" = $1 AND "Source" = $2
+    FROM "Product" WHERE "ExtractionDate" >= $3 AND "ExtractionDate" <= $4 AND "Market" = $1 AND "Source" = $2
     GROUP BY 1, 2, 3, 4;`,
-    [flag, website, date]
+    [flag, website, startDate, date]
   );
 };
 
 exports.getWebsiteCategories = catchAsync(async (req, res) => {
   const { flag } = req.params;
-  const { date = getDefaultDate(), website } = req.query;
+  const { date = getDefaultDate(), startDate, website } = req.query;
   const formattedFlag = flagFormatter(flag);
 
   const categoriesResolved = await websiteCategoriesQuery(
     formattedFlag,
     date,
+    startDate,
     website
   );
 
