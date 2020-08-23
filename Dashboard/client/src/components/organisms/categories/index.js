@@ -19,11 +19,13 @@ const Categories = () => {
   const classes = useStyles();
   const [iso, setIso] = useState(COUNTRIES[0]);
   const [date, setDate] = useState(currentDate);
+  const [startDate, setStartDate] = useState(currentDate);
   const [websites, setWebsites] = useState([]);
   const [website, setWebsite] = useState('');
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const dateRef = useRef(null);
+  const startDateRef = useRef(null);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -57,6 +59,7 @@ const Categories = () => {
         .get(`http://localhost:3100/website-categories/${iso}`, {
           params: {
             date,
+            startDate,
             website,
           },
           cancelToken: source.token,
@@ -74,7 +77,7 @@ const Categories = () => {
         source.cancel();
       };
     }
-  }, [iso, date, website]);
+  }, [iso, date, startDate, website]);
 
   const onSelectFlag = (countryCode) => {
     if (countryCode !== iso) {
@@ -89,6 +92,12 @@ const Categories = () => {
     setCategories([]);
     setWebsite('');
     setDate(dateRef.current.value);
+  };
+
+  const onSelectStartDate = () => {
+    setCategories([]);
+    setWebsite('');
+    setStartDate(startDateRef.current.value);
   };
 
   const onSelectWebsite = ({ target: { value } }) => {
@@ -110,6 +119,18 @@ const Categories = () => {
             shrink: true,
           }}
           inputRef={dateRef}
+          disabled={loading}
+        />
+        <TextField
+          id="startDate"
+          type="date"
+          label="Start historical date"
+          value={startDate}
+          onChange={onSelectStartDate}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputRef={startDateRef}
           disabled={loading}
         />
         <FormControl
