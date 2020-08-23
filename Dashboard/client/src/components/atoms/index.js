@@ -16,3 +16,4 @@ export { default as Select } from './select';
 export { default as Menu } from './menu';
 export { default as Button } from './button';
 export { default as Typography } from './typography';
+export { default as ImageDetails } from './image-details';

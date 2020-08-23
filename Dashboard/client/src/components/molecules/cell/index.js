@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStyles } from './styles';
-import { TableCell } from '../../atoms';
+import { TableCell, ImageDetails } from '../../atoms';
 
 const stat = (currentIndex, counts) => {
   if (currentIndex > 0) {
@@ -43,7 +43,7 @@ const Cell = ({ value, column, isIncorrect }) => {
       <ul className={classes.list}>
         {images.map((v, i) => (
           <li key={i}>
-            <img src={v} alt="missing" />
+            <ImageDetails source={v} />
           </li>
         ))}
       </ul>

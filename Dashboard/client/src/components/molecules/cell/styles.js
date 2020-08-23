@@ -15,10 +15,6 @@ export const useStyles = makeStyles(() =>
         listStyleType: 'none',
         margin: '0 4px',
       },
-      '& img': {
-        width: '50px',
-        border: '1px solid #A3B9C9',
-      },
     },
     timeline: {
       justifyContent: 'center',
