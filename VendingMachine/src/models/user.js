@@ -1,5 +1,5 @@
 const userBalance = {
-    amount: 0
+  amount: 0,
 };
 
 export { userBalance };
