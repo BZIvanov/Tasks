@@ -245,3 +245,63 @@ exports.getWebsiteCategories = catchAsync(async (req, res) => {
     extractionDate: date,
   });
 });
+
+const columns = [
+  'HeroImage',
+  'GalleryImages',
+  'GalleryImagesCount',
+  'InpageImages',
+  'InpageImagesCount',
+  'GalleryVideosCount',
+  'InpageVideosCount',
+  'Price',
+  'OldPrice',
+  'Rating',
+  'Reviews',
+  'Availability',
+];
+
+const domesticsQuery = (flag, source, qstring, column) => {
+  let requestType;
+  if (column !== 'Availability') {
+    requestType = pool.query(
+      `SELECT COUNT("Level1Category") FILTER (WHERE "Level1Category" SIMILAR TO '%(${qstring})%') AS Domestics,
+      100.0 * COUNT("Level1Category") FILTER (WHERE "Level1Category" SIMILAR TO '%(${qstring})%'
+      AND "${column}" IS NOT NULL AND "${column}" <> '0' AND "${column}" <> '') / 
+      (COUNT("Level1Category") FILTER (WHERE "Level1Category" SIMILAR TO '%(${qstring})%')) AS PercentNotNullDomestics
+      FROM "Product" WHERE "ExtractionDate" = '2020-10-12' AND "Market" = $1 AND "Source" = $2;`,
+      [flag, source]
+    );
+  } else {
+    requestType = pool.query(
+      `SELECT COUNT("Level1Category") FILTER (WHERE "Level1Category" SIMILAR TO '%(${qstring})%') AS Domestics,
+      100.0 * COUNT("Level1Category") FILTER (WHERE "Level1Category" SIMILAR TO '%(${qstring})%'
+      AND "${column}" = 'TRUE') / 
+      (COUNT("Level1Category") FILTER (WHERE "Level1Category" SIMILAR TO '%(${qstring})%')) AS PercentNotNullDomestics
+      FROM "Product" WHERE "ExtractionDate" = '2020-10-12' AND "Market" = $1 AND "Source" = $2;`,
+      [flag, source]
+    );
+  }
+
+  return requestType;
+};
+
+exports.getDomestics = catchAsync(async (req, res) => {
+  const { flag } = req.params;
+  const { source, qstring } = req.query;
+
+  const domesticsResolved = await Promise.all(
+    columns.map(async (column) => {
+      return {
+        q: await domesticsQuery(flag, source, qstring, column),
+        c: column,
+      };
+    })
+  );
+
+  res.status(200).json({
+    categories: domesticsResolved.map((d) => {
+      return { ...d.q.rows[0], column: d.c };
+    }),
+  });
+});
