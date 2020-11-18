@@ -3,15 +3,19 @@
 ## How to use?
 
 1. Install all the dependencies, by running in the terminal the following command:
+
 ```javascript
 npm install
 ```
 
 2. To run the project files, first run the index.ts file with the following command:
+
 ```javascript
 tsc index.ts
 ```
+
 Then run the index.js file with the following command:
+
 ```javascript
 node index.js
 ```

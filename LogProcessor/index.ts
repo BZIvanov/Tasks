@@ -4,14 +4,17 @@ import fillFields = require('./fillFields');
 import validatedFields = require('./validateFields');
 import structuredData = require('./structureData');
 
-fs.readFile('./inputs/log-processor.log', 'utf8', (err: Object, data: string) => {
+fs.readFile(
+  './inputs/log-processor.log',
+  'utf8',
+  (err: Object, data: string) => {
     if (err) {
-        return console.log("Something went wrong with reading your file.");
+      return console.log('Something went wrong with reading your file.');
     }
 
     const errFilePath = './outputs/log-processor.log.err';
     if (fs.existsSync(errFilePath)) {
-        fs.unlinkSync(errFilePath);
+      fs.unlinkSync(errFilePath);
     }
 
     const hostNames: string[] = fillFields.getHostName(data);
@@ -20,24 +23,37 @@ fs.readFile('./inputs/log-processor.log', 'utf8', (err: Object, data: string) =>
     const statusCode: string[] = fillFields.getStatusCode(data);
     const hitMissStatus: string[] = fillFields.getHitMissStatus(data);
     const bytes: number[] = fillFields.getBytes(data);
-    
+
     // with the following function we will get the errors data ready for the errors file
     const invalidData = validatedFields.validateFields(data, hitMissStatus);
     const report: string[] = invalidData.errors;
-    fs.writeFile("./outputs/log-processor.log.err", report.join('\n'), (err: Object) => {
+    fs.writeFile(
+      './outputs/log-processor.log.err',
+      report.join('\n'),
+      (err: Object) => {
         if (err) {
-            return console.log(err);
+          return console.log(err);
         }
-        console.log("The errors file was saved!");
-    });
+        console.log('The errors file was saved!');
+      }
+    );
 
     // with the following function we will get the data ready for the json file
     const incorectIndexes = invalidData.incorrectIndexes;
-    const objectData = structuredData(hostNames, dates, hours, statusCode, hitMissStatus, bytes, incorectIndexes);
-    fs.writeFile("./outputs/log-processor.json", objectData, (err: Object) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("The .json file was saved!");
+    const objectData = structuredData(
+      hostNames,
+      dates,
+      hours,
+      statusCode,
+      hitMissStatus,
+      bytes,
+      incorectIndexes
+    );
+    fs.writeFile('./outputs/log-processor.json', objectData, (err: Object) => {
+      if (err) {
+        return console.log(err);
+      }
+      console.log('The .json file was saved!');
     });
-});
+  }
+);
